@@ -34,9 +34,6 @@ sudo apt install -y unzip
 sudo update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/bin/firefox 200
 sudo update-alternatives --install /usr/bin/gnome-www-browser gnome-www-browser /usr/bin/firefox 200
 
-# Mostrar mensaje de acceso a Chrome Remote Desktop
-echo "ACCEDER A Chrome Remote Desktop Access: https://remotedesktop.google.com"
-echo "RECORDAR PIN: 123456"
 
 # Eliminar archivos descargados
 rm -f chrome-remote-desktop_current_amd64.deb
@@ -100,6 +97,43 @@ EOF
 
 # Hacer el script de desinstalación ejecutable
 chmod +x "$UNINSTALL_SCRIPT"
+
+# Crear accesos directos en el escritorio
+
+# Directorio del escritorio del usuario
+DESKTOP_DIR=$(eval echo ~$USER/Desktop)
+
+# Crear acceso directo a Firefox
+cat << EOF > "$DESKTOP_DIR/Firefox.desktop"
+[Desktop Entry]
+Name=Firefox
+Comment=Launch Firefox Browser
+Exec=/usr/bin/firefox
+Icon=firefox
+Terminal=false
+Type=Application
+Categories=Network;WebBrowser;
+EOF
+
+# Crear acceso directo a la terminal con permisos de superadministrador
+cat << EOF > "$DESKTOP_DIR/Terminal_Superadmin.desktop"
+[Desktop Entry]
+Name=Terminal Superadmin
+Comment=Launch Terminal with sudo
+Exec=gksudo gnome-terminal
+Icon=utilities-terminal
+Terminal=false
+Type=Application
+Categories=Utility;TerminalEmulator;
+EOF
+
+# Hacer los accesos directos ejecutables
+chmod +x "$DESKTOP_DIR/Firefox.desktop"
+chmod +x "$DESKTOP_DIR/Terminal_Superadmin.desktop"
+
+# Mostrar mensaje de acceso a Chrome Remote Desktop
+echo "ACCEDER A Chrome Remote Desktop Access: https://remotedesktop.google.com"
+echo "RECORDAR PIN: 123456"
 
 # Mensaje final y esperar a que se presione una tecla
 echo "Script completado."
