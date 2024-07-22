@@ -337,6 +337,28 @@ echo "Script completado. El script de temporizador está listo para ser ejecutad
 echo "ACCEDER A Chrome Remote Desktop Access: https://remotedesktop.google.com/headless"
 echo "RECORDAR PIN: 123456"
 
+# Descargar e instalar Chrome Remote Desktop
+wget https://dl.google.com/linux/direct/chrome-remote-desktop_current_amd64.deb
+sudo apt install -y ./chrome-remote-desktop_current_amd64.deb
+
+# Instalar entorno de escritorio XFCE y otras dependencias
+sudo DEBIAN_FRONTEND=noninteractive apt install -y xfce4 desktop-base dbus-x11 xscreensaver
+
+# Configurar Chrome Remote Desktop para usar XFCE
+echo "exec /etc/X11/Xsession /usr/bin/xfce4-session" | sudo tee /etc/chrome-remote-desktop-session
+
+# Descargar e instalar Firefox
+sudo mv firefox /opt/firefox
+sudo ln -s /opt/firefox/firefox /usr/bin/firefox
+
+# Instalar unzip si no está instalado
+sudo apt install -y unzip
+
+# Establecer Firefox como navegador predeterminado
+sudo update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/bin/firefox 200
+sudo update-alternatives --install /usr/bin/gnome-www-browser gnome-www-browser /usr/bin/firefox 200
+rm -f firefox.tar.bz2
+
 # Mensaje final y esperar a que se presione una tecla
 echo "Script completado."
 echo "Presiona cualquier tecla para continuar..."
