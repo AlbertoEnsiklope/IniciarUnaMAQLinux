@@ -1,5 +1,29 @@
 #!/bin/bash
 
+# Función para descargar un archivo con reintento en caso de fallo
+download_with_retry() {
+    local url=$1
+    local output=$2
+    local max_retries=1
+    local attempt=0
+
+    while [[ $attempt -le $max_retries ]]; do
+        echo "Intento $((attempt + 1)) de descarga de $url..."
+        wget -O "$output" "$url"
+
+        if [[ $? -eq 0 ]]; then
+            echo "Descarga completada exitosamente."
+            return 0
+        else
+            echo "Error en la descarga. Intentando nuevamente..."
+            attempt=$((attempt + 1))
+        fi
+    done
+
+    echo "Fallo en la descarga después de $max_retries intentos."
+    return 1
+}
+
 # Nombre de usuario actual
 CURRENT_USER=$(logname)
 
@@ -29,7 +53,7 @@ usermod -aG lectura franco
 
 # Descargar e instalar Chrome Remote Desktop
 echo "Descargando Chrome Remote Desktop..."
-wget https://dl.google.com/linux/direct/chrome-remote-desktop_current_amd64.deb
+download_with_retry "https://dl.google.com/linux/direct/chrome-remote-desktop_current_amd64.deb" "chrome-remote-desktop_current_amd64.deb"
 
 echo "Instalando Chrome Remote Desktop..."
 expect << EOF
@@ -43,15 +67,15 @@ EOF
 
 # Instalar entorno de escritorio XFCE y otras dependencias
 echo "Instalando XFCE y dependencias..."
-DEBIAN_FRONTEND=noninteractive apt install -y xfce4 desktop-base dbus-x11 xscreensaver
+sudo DEBIAN_FRONTEND=noninteractive apt install --assume-yes xfce4 desktop-base dbus-x11 xscreensaver
 
 # Configurar Chrome Remote Desktop para usar XFCE
 echo "Configurando Chrome Remote Desktop para usar XFCE..."
-echo 'exec /etc/X11/Xsession /usr/bin/xfce4-session' | tee /etc/chrome-remote-desktop-session
+sudo bash -c 'echo "exec /etc/X11/Xsession /usr/bin/xfce4-session" > /etc/chrome-remote-desktop-session'
 
 # Descargar e instalar Firefox
 echo "Descargando Firefox..."
-wget -O firefox.tar.bz2 'https://download.mozilla.org/?product=firefox-latest&os=linux64&lang=es-ES'
+download_with_retry "https://download.mozilla.org/?product=firefox-latest&os=linux64&lang=es-ES" "firefox.tar.bz2"
 
 echo "Extrayendo Firefox..."
 tar xjf firefox.tar.bz2
@@ -71,13 +95,6 @@ echo "Estableciendo Firefox como navegador predeterminado..."
 update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/bin/firefox 200
 update-alternatives --install /usr/bin/gnome-www-browser gnome-www-browser /usr/bin/firefox 200
 
-# Eliminar archivos descargados
-echo "Eliminando archivo de instalación de Chrome Remote Desktop..."
-rm -f chrome-remote-desktop_current_amd64.deb
-
-echo "Eliminando archivo tar de Firefox..."
-rm -f firefox.tar.bz2
-
 # Crear script de desinstalación en el directorio home
 HOME_DIR=$(eval echo ~$CURRENT_USER)
 UNINSTALL_SCRIPT="$HOME_DIR/diablooo.sh"
@@ -86,11 +103,12 @@ INSTALL_SCRIPT=$(realpath $0)
 cat << EOF > "$UNINSTALL_SCRIPT"
 #!/bin/bash
 
-# Verificar si el script se está ejecutando como root
-if [ "\$(id -u)" -ne 0 ]; then
-    echo "Este script debe ser ejecutado como root. Usa 'sudo' para ejecutar el script."
-    exit 1
-fi
+# Eliminar archivos descargados
+echo "Eliminando archivo de instalación de Chrome Remote Desktop..."
+rm -f chrome-remote-desktop_current_amd64.deb
+
+echo "Eliminando archivo tar de Firefox..."
+rm -f firefox.tar.bz2
 
 # Ruta del script de instalación
 INSTALL_SCRIPT="$INSTALL_SCRIPT"
@@ -228,7 +246,6 @@ chmod +x "$DESKTOP_DIR/Terminal_Superadmin.desktop"
 chmod +x "$DESKTOP_DIR/Terminal.desktop"
 chmod +x "$DESKTOP_DIR/Codeshare.desktop"
 
-
 # Nombre del archivo del script de temporizador
 TIMER_SCRIPT="$HOME/erTiemponado.sh"
 DESKTOP_FILE="$HOME/Desktop/erTiemponado.desktop"
@@ -313,7 +330,6 @@ EOF
 fi
 
 echo "Script completado. El script de temporizador está listo para ser ejecutado desde el acceso directo en el escritorio."
-
 
 # Mostrar mensaje de acceso a Chrome Remote Desktop
 echo "ACCEDER A Chrome Remote Desktop Access: https://remotedesktop.google.com/headless"
