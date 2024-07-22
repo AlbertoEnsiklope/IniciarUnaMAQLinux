@@ -1,11 +1,5 @@
 #!/bin/bash
 
-# Verificar si el script se está ejecutando como root
-if [ "$(id -u)" -ne 0 ]; then
-    echo "Este script debe ser ejecutado como root. Usa 'sudo' para ejecutar el script."
-    exit 1
-fi
-
 # Nombre de usuario actual
 CURRENT_USER=$(logname)
 
