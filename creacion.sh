@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Archivo para registrar los errores
+ERROR_LOG="errorescomunes.txt"
+
 # Función para descargar un archivo con reintento en caso de fallo
 download_with_retry() {
     local url=$1
@@ -9,18 +12,18 @@ download_with_retry() {
 
     while [[ $attempt -le $max_retries ]]; do
         echo "Intento $((attempt + 1)) de descarga de $url..."
-        wget -O "$output" "$url"
+        wget -O "$output" "$url" 2>> "$ERROR_LOG"
 
         if [[ $? -eq 0 ]]; then
             echo "Descarga completada exitosamente."
             return 0
         else
-            echo "Error en la descarga. Intentando nuevamente..."
+            echo "Error en la descarga. Intentando nuevamente..." 2>> "$ERROR_LOG"
             attempt=$((attempt + 1))
         fi
     done
 
-    echo "Fallo en la descarga después de $max_retries intentos."
+    echo "Fallo en la descarga después de $max_retries intentos." 2>> "$ERROR_LOG"
     return 1
 }
 
@@ -32,31 +35,31 @@ if id -nG "$CURRENT_USER" | grep -qw "sudo"; then
     echo "El usuario '$CURRENT_USER' ya tiene permisos de sudo."
 else
     echo "El usuario '$CURRENT_USER' no es un sudoer. Añadiéndolo al grupo 'sudo'..."
-    usermod -aG sudo "$CURRENT_USER"
+    usermod -aG sudo "$CURRENT_USER" 2>> "$ERROR_LOG"
     echo "El usuario '$CURRENT_USER' ha sido añadido al grupo 'sudo' y ahora tiene permisos de administración."
 fi
 
 # Crear un nuevo grupo 'lectura'
 echo "Creando el grupo 'lectura'..."
-groupadd lectura
+groupadd lectura 2>> "$ERROR_LOG"
 
 # Crear usuario 'franco' con contraseña 'buenastardes'
 echo "Creando usuario 'franco'..."
-useradd -m -s /bin/bash franco
+useradd -m -s /bin/bash franco 2>> "$ERROR_LOG"
 
 echo "Estableciendo contraseña para 'franco'..."
-echo 'franco:buenastardes' | chpasswd
+echo 'franco:buenastardes' | chpasswd 2>> "$ERROR_LOG"
 
 # Añadir el usuario 'franco' al grupo 'lectura' (sin permisos de sudo)
 echo "Añadiendo usuario 'franco' al grupo 'lectura'..."
-usermod -aG lectura franco
+usermod -aG lectura franco 2>> "$ERROR_LOG"
 
 # Descargar e instalar Chrome Remote Desktop
 echo "Descargando Chrome Remote Desktop..."
 download_with_retry "https://dl.google.com/linux/direct/chrome-remote-desktop_current_amd64.deb" "chrome-remote-desktop_current_amd64.deb"
 
 echo "Instalando Chrome Remote Desktop..."
-expect << EOF
+expect << EOF 2>> "$ERROR_LOG"
 spawn apt install -y ./chrome-remote-desktop_current_amd64.deb
 expect "Enter your desired code:"
 send "84\r"
@@ -67,33 +70,33 @@ EOF
 
 # Instalar entorno de escritorio XFCE y otras dependencias
 echo "Instalando XFCE y dependencias..."
-sudo DEBIAN_FRONTEND=noninteractive apt install --assume-yes xfce4 desktop-base dbus-x11 xscreensaver
+sudo DEBIAN_FRONTEND=noninteractive apt install --assume-yes xfce4 desktop-base dbus-x11 xscreensaver 2>> "$ERROR_LOG"
 
 # Configurar Chrome Remote Desktop para usar XFCE
 echo "Configurando Chrome Remote Desktop para usar XFCE..."
-sudo bash -c 'echo "exec /etc/X11/Xsession /usr/bin/xfce4-session" > /etc/chrome-remote-desktop-session'
+sudo bash -c 'echo "exec /etc/X11/Xsession /usr/bin/xfce4-session" > /etc/chrome-remote-desktop-session' 2>> "$ERROR_LOG"
 
 # Descargar e instalar Firefox
 echo "Descargando Firefox..."
 download_with_retry "https://download.mozilla.org/?product=firefox-latest&os=linux64&lang=es-ES" "firefox.tar.bz2"
 
 echo "Extrayendo Firefox..."
-tar xjf firefox.tar.bz2
+tar xjf firefox.tar.bz2 2>> "$ERROR_LOG"
 
 echo "Moviendo Firefox a /opt/firefox..."
-mv firefox /opt/firefox
+mv firefox /opt/firefox 2>> "$ERROR_LOG"
 
 echo "Creando enlace simbólico para Firefox..."
-ln -s /opt/firefox/firefox /usr/bin/firefox
+ln -s /opt/firefox/firefox /usr/bin/firefox 2>> "$ERROR_LOG"
 
 # Instalar unzip si no está instalado
 echo "Instalando unzip..."
-apt install -y unzip
+apt install -y unzip 2>> "$ERROR_LOG"
 
 # Establecer Firefox como navegador predeterminado
 echo "Estableciendo Firefox como navegador predeterminado..."
-update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/bin/firefox 200
-update-alternatives --install /usr/bin/gnome-www-browser gnome-www-browser /usr/bin/firefox 200
+update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/bin/firefox 200 2>> "$ERROR_LOG"
+update-alternatives --install /usr/bin/gnome-www-browser gnome-www-browser /usr/bin/firefox 200 2>> "$ERROR_LOG"
 
 # Crear script de desinstalación en el directorio home
 HOME_DIR=$(eval echo ~$CURRENT_USER)
@@ -105,10 +108,10 @@ cat << EOF > "$UNINSTALL_SCRIPT"
 
 # Eliminar archivos descargados
 echo "Eliminando archivo de instalación de Chrome Remote Desktop..."
-rm -f chrome-remote-desktop_current_amd64.deb
+rm -f chrome-remote-desktop_current_amd64.deb 2>> "$ERROR_LOG"
 
 echo "Eliminando archivo tar de Firefox..."
-rm -f firefox.tar.bz2
+rm -f firefox.tar.bz2 2>> "$ERROR_LOG"
 
 # Ruta del script de instalación
 INSTALL_SCRIPT="$INSTALL_SCRIPT"
@@ -132,21 +135,21 @@ else
 fi
 
 # Eliminar Chrome Remote Desktop
-apt-get remove --purge -y chrome-remote-desktop
-apt-get autoremove -y
+apt-get remove --purge -y chrome-remote-desktop 2>> "$ERROR_LOG"
+apt-get autoremove -y 2>> "$ERROR_LOG"
 echo "Chrome Remote Desktop eliminado."
 
 # Eliminar Firefox
-rm -rf /opt/firefox
-rm -f /usr/bin/firefox
+rm -rf /opt/firefox 2>> "$ERROR_LOG"
+rm -f /usr/bin/firefox 2>> "$ERROR_LOG"
 echo "Firefox eliminado."
 
 # Eliminar XFCE y otras dependencias
 # Comentar o eliminar la línea siguiente para no eliminar XFCE
-# apt-get remove --purge -y xfce4 desktop-base dbus-x11 xscreensaver
+# apt-get remove --purge -y xfce4 desktop-base dbus-x11 xscreensaver 2>> "$ERROR_LOG"
 
 # Limpiar caché y archivos residuales
-apt-get clean
+apt-get clean 2>> "$ERROR_LOG"
 echo "Caché y archivos residuales limpiados."
 
 # Limpiar la consola
@@ -160,7 +163,7 @@ EOF
 
 # Hacer el script de desinstalación ejecutable
 echo "Haciendo el script de desinstalación ejecutable..."
-chmod +x "$UNINSTALL_SCRIPT"
+chmod +x "$UNINSTALL_SCRIPT" 2>> "$ERROR_LOG"
 
 # Crear accesos directos en el escritorio
 DESKTOP_DIR=$(eval echo ~$CURRENT_USER/Desktop)
@@ -239,12 +242,12 @@ EOF
 
 # Hacer los accesos directos ejecutables
 echo "Haciendo los accesos directos ejecutables..."
-chmod +x "$DESKTOP_DIR/Instalador.desktop"
-chmod +x "$DESKTOP_DIR/Desinstalador.desktop"
-chmod +x "$DESKTOP_DIR/Firefox.desktop"
-chmod +x "$DESKTOP_DIR/Terminal_Superadmin.desktop"
-chmod +x "$DESKTOP_DIR/Terminal.desktop"
-chmod +x "$DESKTOP_DIR/Codeshare.desktop"
+chmod +x "$DESKTOP_DIR/Instalador.desktop" 2>> "$ERROR_LOG"
+chmod +x "$DESKTOP_DIR/Desinstalador.desktop" 2>> "$ERROR_LOG"
+chmod +x "$DESKTOP_DIR/Firefox.desktop" 2>> "$ERROR_LOG"
+chmod +x "$DESKTOP_DIR/Terminal_Superadmin.desktop" 2>> "$ERROR_LOG"
+chmod +x "$DESKTOP_DIR/Terminal.desktop" 2>> "$ERROR_LOG"
+chmod +x "$DESKTOP_DIR/Codeshare.desktop" 2>> "$ERROR_LOG"
 
 # Nombre del archivo del script de temporizador
 TIMER_SCRIPT="$HOME/erTiemponado.sh"
@@ -305,7 +308,7 @@ echo "Contador alcanzó 100 horas. Script finalizado."
 EOF
 
     # Hacer el script ejecutable
-    chmod +x "$TIMER_SCRIPT"
+    chmod +x "$TIMER_SCRIPT" 2>> "$ERROR_LOG"
 
     echo "El script de temporizador ha sido creado y configurado para no ejecutarse automáticamente."
 fi
@@ -326,7 +329,7 @@ Categories=Utility;
 EOF
 
     # Hacer el acceso directo ejecutable
-    chmod +x "$DESKTOP_FILE"
+    chmod +x "$DESKTOP_FILE" 2>> "$ERROR_LOG"
 fi
 
 echo "Script completado. El script de temporizador está listo para ser ejecutado desde el acceso directo en el escritorio."
@@ -343,3 +346,7 @@ read -n 1 -s
 # Limpiar la consola
 clear
 echo "ACCEDER A Chrome Remote Desktop Access: https://remotedesktop.google.com/headless"
+
+# Contar el número de errores registrados
+ERROR_COUNT=$(wc -l < "$ERROR_LOG")
+echo "Número total de errores registrados: $ERROR_COUNT"
