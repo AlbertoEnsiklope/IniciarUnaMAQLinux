@@ -229,7 +229,7 @@ chmod +x "$DESKTOP_DIR/Terminal.desktop"
 chmod +x "$DESKTOP_DIR/Codeshare.desktop"
 
 # Mostrar mensaje de acceso a Chrome Remote Desktop
-echo "ACCEDER A Chrome Remote Desktop Access: https://remotedesktop.google.com"
+echo "ACCEDER A Chrome Remote Desktop Access: https://remotedesktop.google.com/headless"
 echo "RECORDAR PIN: 123456"
 
 # Mensaje final y esperar a que se presione una tecla
@@ -239,3 +239,4 @@ read -n 1 -s
 
 # Limpiar la consola
 clear
+echo "ACCEDER A Chrome Remote Desktop Access: https://remotedesktop.google.com/headless"
