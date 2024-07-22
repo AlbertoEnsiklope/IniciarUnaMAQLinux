@@ -228,6 +228,93 @@ chmod +x "$DESKTOP_DIR/Terminal_Superadmin.desktop"
 chmod +x "$DESKTOP_DIR/Terminal.desktop"
 chmod +x "$DESKTOP_DIR/Codeshare.desktop"
 
+
+# Nombre del archivo del script de temporizador
+TIMER_SCRIPT="$HOME/erTiemponado.sh"
+DESKTOP_FILE="$HOME/Desktop/erTiemponado.desktop"
+
+# Verificar si el script de temporizador ya existe
+if [ ! -f "$TIMER_SCRIPT" ]; then
+    echo "Creando el script de temporizador ($TIMER_SCRIPT)..."
+    
+    # Crear el script de temporizador
+    cat << EOF > "$TIMER_SCRIPT"
+#!/bin/bash
+
+# Archivo para guardar el número de horas
+COUNT_FILE="\$HOME/hours_counter.txt"
+
+# Inicializar el contador si el archivo no existe
+if [ ! -f "\$COUNT_FILE" ]; then
+    echo 0 > "\$COUNT_FILE"
+fi
+
+# Leer el contador actual
+COUNTER=\$(cat "\$COUNT_FILE")
+
+# Función para mostrar una notificación
+notify() {
+    local message="\$1"
+    # Comando para mostrar notificaciones en el escritorio
+    if command -v notify-send &> /dev/null; then
+        notify-send "Horas Contador" "\$message"
+    else
+        echo "\$message"
+    fi
+}
+
+# Función para incrementar el contador y mostrar en pantalla
+increment_counter() {
+    COUNTER=\$((COUNTER + 1))
+    echo \$COUNTER > "\$COUNT_FILE"
+    echo "Horas transcurridas: \$COUNTER"  # Mostrar en pantalla
+}
+
+# Bucle para contar las horas
+while [ \$COUNTER -lt 100 ]; do
+    sleep 1h  # Esperar 1 hora
+    increment_counter
+
+    if [ \$COUNTER -eq 50 ]; then
+        notify "El contador ha llegado a 50 horas."
+    elif [ \$COUNTER -gt 50 ] && [ \$COUNTER -lt 100 ]; then
+        echo "Horas transcurridas: \$COUNTER"  # Mostrar en pantalla
+    fi
+done
+
+# Notificación cuando se llega a 100 horas
+notify "El contador ha llegado a 100 horas."
+echo "Contador alcanzó 100 horas. Script finalizado."
+EOF
+
+    # Hacer el script ejecutable
+    chmod +x "$TIMER_SCRIPT"
+
+    echo "El script de temporizador ha sido creado y configurado para no ejecutarse automáticamente."
+fi
+
+# Crear acceso directo en el escritorio para el script de temporizador
+if [ ! -f "$DESKTOP_FILE" ]; then
+    echo "Creando acceso directo en el escritorio ($DESKTOP_FILE)..."
+    
+    cat << EOF > "$DESKTOP_FILE"
+[Desktop Entry]
+Name=Temporizador
+Comment=Ejecutar el script de temporizador
+Exec=/bin/bash $TIMER_SCRIPT
+Icon=utilities-terminal
+Terminal=true
+Type=Application
+Categories=Utility;
+EOF
+
+    # Hacer el acceso directo ejecutable
+    chmod +x "$DESKTOP_FILE"
+fi
+
+echo "Script completado. El script de temporizador está listo para ser ejecutado desde el acceso directo en el escritorio."
+
+
 # Mostrar mensaje de acceso a Chrome Remote Desktop
 echo "ACCEDER A Chrome Remote Desktop Access: https://remotedesktop.google.com/headless"
 echo "RECORDAR PIN: 123456"
