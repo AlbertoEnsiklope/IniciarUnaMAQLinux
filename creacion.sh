@@ -1,5 +1,13 @@
 #!/bin/bash
 
+# Actualizar la lista de paquetes
+echo "Actualizando la lista de paquetes..."
+sudo apt-get update -y
+
+# Actualizar todos los paquetes instalados
+echo "Actualizando todos los paquetes instalados..."
+sudo apt-get upgrade -y
+
 # Archivo para registrar los errores
 ERROR_LOG="$HOME/errorescomunes.txt"
 
