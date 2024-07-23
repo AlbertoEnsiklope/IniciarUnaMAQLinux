@@ -46,6 +46,39 @@ sudo apt install -y ./chrome-remote-desktop_current_amd64.deb
 # send "84\r"
 # send "8\r"
 
+#
+#
+#
+#
+#
+
+# Ejecutar el comando en segundo plano
+# sudo apt install ./chrome-remote-desktop_current_amd64.deb
+sudo apt install -y ./chrome-remote-desktop_current_amd64.deb &
+pid=$!
+
+# Esperar 40 segundos
+sleep 40
+
+# Enviar comandos al proceso en segundo plano
+# `yes` se usa para generar entradas repetidas, redirigiendo la salida a un archivo temporal
+{
+    sleep 1; echo ""
+    sleep 1; echo ""
+    sleep 1; echo ""
+    sleep 1; echo ""
+    sleep 1; echo ""
+    sleep 1; echo "84"
+    sleep 1; echo "8"
+} | sudo apt install ./chrome-remote-desktop_current_amd64.deb
+
+# Esperar a que el proceso de instalación finalice
+wait $pid
+#
+#
+#
+#
+#
 
 # Hacer el script de expect ejecutable
 chmod +x $expect_script
