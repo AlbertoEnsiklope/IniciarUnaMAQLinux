@@ -103,3 +103,5 @@ echo \"Accesos directos creados y listos para usar.\"
 chmod +x crearestosacesosdirectos.sh
 
 echo "Script crearestosacesosdirectos.sh creado y listo para usar."
+
+echo "$mensaje"
