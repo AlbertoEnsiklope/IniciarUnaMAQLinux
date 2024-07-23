@@ -41,7 +41,7 @@ echo "ACCEDER A Chrome Remote Desktop Access: https://remotedesktop.google.com R
 rm -f chrome-remote-desktop_current_amd64.deb
 rm -f firefox.tar.bz2
 
-echo "Presiona cualquier tecla para continuar..."
+echo "1a Presiona cualquier tecla para continuar..."
 read -n 1 -s
 
 echo "Archivos descargados eliminados."
@@ -49,5 +49,16 @@ echo "Script completado."
 
 echo "ACCEDER A Chrome Remote Desktop Access: https://remotedesktop.google.com RECORDAR PIN: 123456"
 
+sudo apt-get autoremove
+sudo apt-get --purge remove && sudo apt-get autoclean
+sudo apt-get -f install
+sudo apt-get update
+sudo apt-get upgrade && sudo apt-get dist-upgrade
+sudo dpkg-reconfigure -a
+sudo dpkg --configure -a
+
 sudo apt --fix-broken install
 sudo apt-get update --fix-missing
+
+echo "2a Presiona cualquier tecla para continuar..."
+read -n 1 -s
