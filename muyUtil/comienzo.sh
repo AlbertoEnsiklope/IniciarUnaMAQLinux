@@ -58,8 +58,8 @@ echo "$mensaje"
 sudo dpkg-reconfigure -a
 sudo dpkg --configure -a
 
-sudo apt --fix-broken install
-sudo apt-get update --fix-missing
+sudo apt-get -y --fix-broken install
+sudo apt-get -y update --fix-missing
 
 curl -o borrarSesionActualEntera.sh https://raw.githubusercontent.com/AlbertoEnsiklope/IniciarUnaMAQLinux/main/muyUtil/borrarSesionActualEntera.sh && sudo chmod +x borrarSesionActualEntera.sh
 
