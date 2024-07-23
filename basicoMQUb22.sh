@@ -13,6 +13,9 @@ sudo apt-get install -y expect
 patatoide1="arreglodevida.sh"
 
 # Crea el contenido del nuevo script
+# sudo dpkg --configure -a
+# sudo fuser -vki /var/lib/dpkg/lock-frontend && sudo rm /var/lib/dpkg/lock-frontend && sudo dpkg --configure -a
+
 echo "#!/bin/bash" > "$patatoide1"
 echo "sudo fuser -vki /var/lib/dpkg/lock-frontend && sudo rm /var/lib/dpkg/lock-frontend && sudo dpkg --configure -a" >> "$patatoide1"
 
@@ -36,8 +39,12 @@ wget https://dl.google.com/linux/direct/chrome-remote-desktop_current_amd64.deb
 sudo apt-get update --fix-missing
 
 sudo apt install -y ./chrome-remote-desktop_current_amd64.deb
-send "84\r"
-send "8\r"
+# enter
+# enter
+# enter
+# enter
+# send "84\r"
+# send "8\r"
 
 
 # Hacer el script de expect ejecutable
