@@ -1,6 +1,55 @@
 #!/bin/bash
 
-# Este script elimina las aplicaciones y archivos creados en la sesión actual.
+# Función para mostrar el espacio libre en GiB y GB
+mostrar_espacio_libre() {
+    echo "Espacio libre en disco:"
+    
+    # Obtener el espacio libre en GiB y GB con 3 decimales
+    df -B1 --output=avail / | tail -n 1 | while read -r AVAIL_BYTES; do
+        AVAIL_GIB=$(echo "scale=3; $AVAIL_BYTES / 1024 / 1024 / 1024" | bc)
+        AVAIL_GB=$(echo "scale=3; $AVAIL_BYTES / 1000 / 1000 / 1000" | bc)
+        
+        echo "Espacio libre: $AVAIL_GIB GiB"
+        echo "Espacio libre: $AVAIL_GB GB"
+    done
+}
+
+# Función para eliminar archivos y carpetas creados en la sesión actual
+eliminar_archivos_y_carpetas() {
+    local start_time=$1
+    local dir=$2
+
+    if [ ! -r "$dir" ]; then
+        echo "No se tiene acceso al directorio: $dir"
+        return
+    fi
+
+    echo "Buscando en el directorio: $dir"
+
+    # Encuentra y elimina archivos creados en la sesión actual
+    find "$dir" -type f -newermt "@$start_time" -print0 2>/dev/null | while IFS= read -r -d '' FILE; do
+        if [ -r "$FILE" ]; then
+            echo "Eliminando archivo: $FILE"
+            sudo rm -f "$FILE"
+        else
+            echo "No se tiene acceso al archivo: $FILE"
+        fi
+    done
+
+    # Encuentra y elimina carpetas creadas en la sesión actual
+    find "$dir" -type d -newermt "@$start_time" -print0 2>/dev/null | while IFS= read -r -d '' DIR; do
+        if [ -r "$DIR" ]; then
+            echo "Eliminando carpeta: $DIR"
+            sudo rm -rf "$DIR"
+        else
+            echo "No se tiene acceso a la carpeta: $DIR"
+        fi
+    done
+}
+
+# Mostrar el espacio libre antes de iniciar la limpieza
+echo "Espacio libre antes de la limpieza:"
+mostrar_espacio_libre
 
 # Verifica la fecha de inicio de la sesión
 SESSION_START=$(date -d "$(who -b | awk '{print $3, $4}')" +%s)
@@ -26,19 +75,18 @@ sudo apt-get autoremove --purge -y
 sudo apt-get autoclean
 sudo apt-get clean
 
-# Eliminar archivos y carpetas creados en la sesión actual
+# Eliminar archivos y carpetas creados en la sesión actual en directorios accesibles
 echo "Eliminando archivos y carpetas creados en la sesión actual:"
 
-# Encuentra y elimina archivos creados en la sesión actual
-find / -type f -newermt "@$SESSION_START" -print0 2>/dev/null | while IFS= read -r -d '' FILE; do
-    echo "Eliminando archivo: $FILE"
-    sudo rm -f "$FILE"
-done
+# Directorios comunes donde se puede tener acceso
+DIRECTORIOS="/home /tmp /var/tmp /var/log"
 
-# Encuentra y elimina carpetas creadas en la sesión actual
-find / -type d -newermt "@$SESSION_START" -print0 2>/dev/null | while IFS= read -r -d '' DIR; do
-    echo "Eliminando carpeta: $DIR"
-    sudo rm -rf "$DIR"
+for DIR in $DIRECTORIOS; do
+    eliminar_archivos_y_carpetas "$SESSION_START" "$DIR"
 done
 
 echo "Proceso completado."
+
+# Mostrar el espacio libre después de la limpieza
+echo "Espacio libre después de la limpieza:"
+mostrar_espacio_libre
