@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Este script elimina las aplicaciones instaladas en la sesión actual.
+# Este script elimina las aplicaciones y archivos creados en la sesión actual.
 
 # Verifica la fecha de inicio de la sesión
 SESSION_START=$(date -d "$(who -b | awk '{print $3, $4}')" +%s)
@@ -25,3 +25,20 @@ sudo apt-get autoremove --purge -y
 # Limpia archivos temporales y cachés
 sudo apt-get autoclean
 sudo apt-get clean
+
+# Eliminar archivos y carpetas creados en la sesión actual
+echo "Eliminando archivos y carpetas creados en la sesión actual:"
+
+# Encuentra y elimina archivos creados en la sesión actual
+find / -type f -newermt "@$SESSION_START" -print0 2>/dev/null | while IFS= read -r -d '' FILE; do
+    echo "Eliminando archivo: $FILE"
+    sudo rm -f "$FILE"
+done
+
+# Encuentra y elimina carpetas creadas en la sesión actual
+find / -type d -newermt "@$SESSION_START" -print0 2>/dev/null | while IFS= read -r -d '' DIR; do
+    echo "Eliminando carpeta: $DIR"
+    sudo rm -rf "$DIR"
+done
+
+echo "Proceso completado."
