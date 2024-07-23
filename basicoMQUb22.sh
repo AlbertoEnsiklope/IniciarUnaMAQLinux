@@ -48,3 +48,6 @@ echo "Archivos descargados eliminados."
 echo "Script completado."
 
 echo "ACCEDER A Chrome Remote Desktop Access: https://remotedesktop.google.com RECORDAR PIN: 123456"
+
+sudo apt --fix-broken install
+sudo apt-get update --fix-missing
