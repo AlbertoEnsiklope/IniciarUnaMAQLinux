@@ -1,4 +1,5 @@
 #!/bin/bash
+mensaje="ACCEDER A Chrome Remote Desktop Access: https://remotedesktop.google.com RECORDAR PIN: 123456"
 cd
 CURRENT_USER=$(logname)
 sudo usermod -aG sudo "$CURRENT_USER"
@@ -36,7 +37,7 @@ sudo ln -s /opt/firefox/firefox /usr/bin/firefox
 
 sudo apt install -y unzip
 
-echo "ACCEDER A Chrome Remote Desktop Access: https://remotedesktop.google.com RECORDAR PIN: 123456"
+echo "$mensaje"
 
 rm -f chrome-remote-desktop_current_amd64.deb
 rm -f firefox.tar.bz2
@@ -47,7 +48,7 @@ read -n 1 -s
 echo "Archivos descargados eliminados."
 echo "Script completado."
 
-echo "ACCEDER A Chrome Remote Desktop Access: https://remotedesktop.google.com RECORDAR PIN: 123456"
+echo "$mensaje"
 
 sudo apt-get autoremove
 sudo apt-get --purge remove && sudo apt-get autoclean
@@ -60,5 +61,12 @@ sudo dpkg --configure -a
 sudo apt --fix-broken install
 sudo apt-get update --fix-missing
 
-echo "2a Presiona cualquier tecla para continuar..."
+curl -o borrarSesionActualEntera.sh https://raw.githubusercontent.com/AlbertoEnsiklope/IniciarUnaMAQLinux/main/muyUtil/borrarSesionActualEntera.sh && sudo chmod +x borrarSesionActualEntera.sh
+
+echo "$mensaje"
+
+echo "2a Presiona cualquier tecla para continuar... Y HACER CLEAR"
 read -n 1 -s
+clear
+
+echo "$mensaje"
