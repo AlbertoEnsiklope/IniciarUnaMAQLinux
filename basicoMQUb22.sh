@@ -82,6 +82,9 @@ rm -f $expect_script
 echo "Presiona cualquier tecla para continuar..."
 read -n 1 -s
 
+# sudo apt-get clean
+
+
 echo "Archivos descargados eliminados."
 echo "Script completado."
 
