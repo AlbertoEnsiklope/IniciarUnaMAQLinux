@@ -7,7 +7,6 @@ sudo usermod -aG sudo "$CURRENT_USER"
 sudo apt-get update
 
 patatoide1="arreglodevida.sh"
-
 echo "#!/bin/bash" > "$patatoide1"
 echo "sudo fuser -vki /var/lib/dpkg/lock-frontend && sudo rm /var/lib/dpkg/lock-frontend && sudo dpkg --configure -a" >> "$patatoide1"
 
