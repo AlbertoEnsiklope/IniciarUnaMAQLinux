@@ -63,24 +63,4 @@ sudo apt-get -y update --fix-missing
 
 curl -o borrarSesionActualEntera.sh https://raw.githubusercontent.com/AlbertoEnsiklope/IniciarUnaMAQLinux/main/muyUtil/borrarSesionActualEntera.sh && sudo chmod +x borrarSesionActualEntera.sh
 
-echo "[Desktop Entry]
-Version=1.0
-Name=GitHub MAQ Linux
-Comment=Acceso directo a GitHub MAQ Linux
-Exec=firefox https://github.com/AlbertoEnsiklope/IniciarUnaMAQLinux/tree/main
-Icon=firefox
-Terminal=false
-Type=Application
-Categories=Network;WebBrowser;" > ~/.local/share/applications/github.desktop
-
-chmod +x ~/.local/share/applications/github.desktop
-
-cp ~/.local/share/applications/github.desktop ~/Escritorio/
-
-echo "$mensaje"
-
-echo "2a Presiona cualquier tecla para continuar... Y HACER CLEAR"
-read -n 1 -s
-clear
-
 echo "$mensaje"
