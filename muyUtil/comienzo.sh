@@ -50,11 +50,11 @@ echo "Script completado."
 
 echo "$mensaje"
 
-sudo apt-get autoremove
-sudo apt-get --purge remove && sudo apt-get autoclean
-sudo apt-get -f install
-sudo apt-get update
-sudo apt-get upgrade && sudo apt-get dist-upgrade
+# sudo apt-get autoremove
+# sudo apt-get --purge remove && sudo apt-get autoclean
+# sudo apt-get -f install
+# sudo apt-get update
+# sudo apt-get upgrade && sudo apt-get dist-upgrade
 sudo dpkg-reconfigure -a
 sudo dpkg --configure -a
 
