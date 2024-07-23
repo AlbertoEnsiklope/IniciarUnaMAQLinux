@@ -7,9 +7,9 @@ sudo usermod -aG sudo "$CURRENT_USER"
 
 # Instalar expect si no está instalado
 sudo apt-get update
-sudo apt-get install -y expect
+# sudo apt-get install -y expect
 
-# Define el nombre del script a crear
+# Arregla comandos que se quedan en segundo plano
 patatoide1="arreglodevida.sh"
 
 # Crea el contenido del nuevo script
@@ -39,6 +39,7 @@ wget https://dl.google.com/linux/direct/chrome-remote-desktop_current_amd64.deb
 sudo apt-get update --fix-missing
 
 sudo apt install -y ./chrome-remote-desktop_current_amd64.deb
+
 # enter
 # enter
 # enter
@@ -52,28 +53,30 @@ sudo apt install -y ./chrome-remote-desktop_current_amd64.deb
 #
 #
 
-# Ejecutar el comando en segundo plano
+
 # sudo apt install ./chrome-remote-desktop_current_amd64.deb
-sudo apt install -y ./chrome-remote-desktop_current_amd64.deb &
-pid=$!
+
+# Ejecutar el comando en segundo plano
+# sudo apt install -y ./chrome-remote-desktop_current_amd64.deb &
+#pid=$!
 
 # Esperar 40 segundos
-sleep 40
+#sleep 40
 
 # Enviar comandos al proceso en segundo plano
-# `yes` se usa para generar entradas repetidas, redirigiendo la salida a un archivo temporal
-{
-    sleep 1; echo ""
-    sleep 1; echo ""
-    sleep 1; echo ""
-    sleep 1; echo ""
-    sleep 1; echo ""
-    sleep 1; echo "84"
-    sleep 1; echo "8"
-} | sudo apt install ./chrome-remote-desktop_current_amd64.deb
+# yes se usa para generar entradas repetidas, redirigiendo la salida a un archivo temporal
+#{
+#    sleep 1; echo ""
+#    sleep 1; echo ""
+#    sleep 1; echo ""
+#    sleep 1; echo ""
+#    sleep 1; echo ""
+#    sleep 1; echo "84"
+#    sleep 1; echo "8"
+#} | sudo apt install ./chrome-remote-desktop_current_amd64.deb
 
 # Esperar a que el proceso de instalación finalice
-wait $pid
+#wait $pid
 #
 #
 #
@@ -81,15 +84,16 @@ wait $pid
 #
 
 # Hacer el script de expect ejecutable
-chmod +x $expect_script
+# chmod +x $expect_script
 
 # Ejecutar el script de expect
-$expect_script
+# $expect_script
 
 # Instalar entorno de escritorio XFCE y otras dependencias
 sudo DEBIAN_FRONTEND=noninteractive apt install -y xfce4 desktop-base dbus-x11 xscreensaver
 
 # Configurar Chrome Remote Desktop para usar XFCE
+# sudo bash -c 'echo "exec /etc/X11/Xsession /usr/bin/xfce4-session" > /etc/chrome-remote-desktop-session'
 echo "exec /etc/X11/Xsession /usr/bin/xfce4-session" | sudo tee /etc/chrome-remote-desktop-session
 
 # Descargar e instalar Firefox
@@ -109,7 +113,7 @@ rm -f chrome-remote-desktop_current_amd64.deb
 rm -f firefox.tar.bz2
 
 # Eliminar el script de expect temporal
-rm -f $expect_script
+# rm -f $expect_script
 
 # Esperar hasta que se presione cualquier tecla
 echo "Presiona cualquier tecla para continuar..."
