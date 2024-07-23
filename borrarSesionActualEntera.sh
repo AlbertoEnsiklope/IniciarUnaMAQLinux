@@ -3,21 +3,6 @@
 # Ruta del script
 SCRIPT_PATH=$(realpath "$0")
 
-# Función para mostrar el espacio libre en GiB y GB
-mostrar_espacio_libre() {
-    echo "Espacio libre en disco:"
-
-    # Obtener el espacio libre en bytes en el sistema de archivos raíz
-    local AVAIL_BYTES=$(df / | awk 'NR==2 {print $4}')
-    
-    # Convertir bytes a GiB y GB
-    local AVAIL_GIB=$(echo "scale=3; $AVAIL_BYTES / 1024 / 1024 / 1024" | bc)
-    local AVAIL_GB=$(echo "scale=3; $AVAIL_BYTES / 1000 / 1000 / 1000" | bc)
-    
-    echo "Espacio libre: $AVAIL_GIB GiB"
-    echo "Espacio libre: $AVAIL_GB GB"
-}
-
 # Función para verificar si un directorio es crítico
 es_directorio_critico() {
     local DIR=$1
@@ -64,24 +49,22 @@ eliminar_archivos_y_carpetas() {
 
     # Encuentra y elimina carpetas creadas en la sesión actual, excluyendo la carpeta del script
     find "$dir" -type d -newermt "@$start_time" -print0 2>/dev/null | while IFS= read -r -d '' DIR; do
-        if [ -r "$DIR" ] && ! es_directorio_critico "$DIR"; then
-            if [ "$DIR" != "$(dirname "$SCRIPT_PATH")" ]; then
-                echo "Eliminando carpeta: $DIR"
-                sudo rm -rf "$DIR"
+        if [ -r "$DIR" ]; then
+            if [ "$DIR" != "$(dirname "$SCRIPT_PATH")" ] && ! es_directorio_critico "$DIR"; then
+                if [ "$(ls -A "$DIR" 2>/dev/null)" ]; then
+                    echo "El directorio $DIR no está vacío. No se eliminará."
+                else
+                    echo "Eliminando carpeta: $DIR"
+                    sudo rm -rf "$DIR"
+                fi
             else
-                echo "No se eliminará la carpeta del script: $DIR"
+                echo "No se eliminará la carpeta del script o es un directorio crítico: $DIR"
             fi
-        elif es_directorio_critico "$DIR"; then
-            echo "El directorio $DIR es crítico. No se eliminarán carpetas en este directorio."
         else
             echo "No se tiene acceso a la carpeta: $DIR"
         fi
     done
 }
-
-# Mostrar el espacio libre antes de iniciar la limpieza
-echo "Espacio libre antes de la limpieza:"
-mostrar_espacio_libre
 
 # Verifica la fecha de inicio de la sesión
 SESSION_START=$(date -d "$(who -b | awk '{print $3, $4}')" +%s)
@@ -118,7 +101,3 @@ for DIR in $DIRECTORIOS; do
 done
 
 echo "Proceso completado."
-
-# Mostrar el espacio libre después de la limpieza
-echo "Espacio libre después de la limpieza:"
-mostrar_espacio_libre
