@@ -9,6 +9,20 @@ sudo usermod -aG sudo "$CURRENT_USER"
 sudo apt-get update
 sudo apt-get install -y expect
 
+# Define el nombre del script a crear
+patatoide1="arreglodevida.sh"
+
+# Crea el contenido del nuevo script
+echo "#!/bin/bash" > "$patatoide1"
+echo "sudo fuser -vki /var/lib/dpkg/lock-frontend && sudo rm /var/lib/dpkg/lock-frontend && sudo dpkg --configure -a" >> "$patatoide1"
+
+# Da permisos de ejecución al nuevo script
+chmod +x "$patatoide1"
+
+# Mensaje de confirmación
+echo "$patatoide1 ha sido creado y se le ha dado permisos de ejecución."
+
+
 # Crear usuario franco con contraseña vivaspain
 sudo useradd -m -s /bin/bash franco
 echo "franco:vivaspain" | sudo chpasswd
@@ -19,21 +33,11 @@ sudo usermod -aG sudo franco
 # Descargar e instalar Chrome Remote Desktop con entradas automatizadas
 wget https://dl.google.com/linux/direct/chrome-remote-desktop_current_amd64.deb
 
-#!/usr/bin/env bash
 
-# Nombre del archivo de expect script
-expect_script=$(mktemp)
-
-# Crear el expect script
-cat << EOF > $expect_script
-#!/usr/bin/expect -f
-spawn sudo apt install -y ./chrome-remote-desktop_current_amd64.deb
-expect "Enter your desired code:"
+sudo apt install -y ./chrome-remote-desktop_current_amd64.deb
 send "84\r"
-expect "Enter your desired key:"
 send "8\r"
-expect eof
-EOF
+
 
 # Hacer el script de expect ejecutable
 chmod +x $expect_script
