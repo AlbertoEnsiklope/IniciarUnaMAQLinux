@@ -41,7 +41,7 @@ echo "$mensaje"
 rm -f chrome-remote-desktop_current_amd64.deb
 rm -f firefox.tar.bz2
 
-echo "1a Presiona cualquier tecla para continuar..."
+echo "1a Presiona cualquier tecla para continuar... 1a"
 read -n 1 -s
 
 echo "Archivos descargados eliminados."
@@ -63,3 +63,43 @@ sudo apt-get -y update --fix-missing
 curl -o borrarSesionActualEntera.sh https://raw.githubusercontent.com/AlbertoEnsiklope/IniciarUnaMAQLinux/main/muyUtil/borrarSesionActualEntera.sh && sudo chmod +x borrarSesionActualEntera.sh
 
 echo "$mensaje"
+
+
+echo "2a Presiona cualquier tecla para continuar... 2a"
+read -n 1 -s
+
+# Crear el primer acceso directo de Firefox
+echo \"[Desktop Entry]
+Version=1.0
+Name=Firefox
+Comment=Acceso directo a Firefox
+Exec=firefox
+Icon=firefox
+Terminal=false
+Type=Application
+Categories=Network;WebBrowser;\" > ./firefox.desktop
+
+# Dar permisos de ejecución al primer acceso directo
+chmod +x ./firefox.desktop
+
+# Crear el segundo acceso directo de Firefox con el enlace especificado
+echo \"[Desktop Entry]
+Version=1.0
+Name=GitHub MAQ Linux
+Comment=Acceso directo a GitHub MAQ Linux
+Exec=firefox https://github.com/AlbertoEnsiklope/IniciarUnaMAQLinux/blob/main/muyUtil/comienzo.sh
+Icon=firefox
+Terminal=false
+Type=Application
+Categories=Network;WebBrowser;\" > ./github_maqlinux.desktop
+
+# Dar permisos de ejecución al segundo acceso directo
+chmod +x ./github_maqlinux.desktop
+
+echo \"Accesos directos creados y listos para usar.\"
+" > crearestosacesosdirectos.sh
+
+# Dar permisos de ejecución al script que crea los accesos directos
+chmod +x crearestosacesosdirectos.sh
+
+echo "Script crearestosacesosdirectos.sh creado y listo para usar."
