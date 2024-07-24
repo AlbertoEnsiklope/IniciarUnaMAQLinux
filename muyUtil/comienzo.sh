@@ -5,6 +5,7 @@ CURRENT_USER=$(logname)
 sudo usermod -aG sudo "$CURRENT_USER"
 
 sudo apt-get update
+sudo apt-get update --fix-missing
 
 patatoide1="arreglodevida.sh"
 echo "#!/bin/bash" > "$patatoide1"
@@ -26,8 +27,6 @@ curl -o quitarpubli.sh https://raw.githubusercontent.com/AlbertoEnsiklope/Inicia
 chmod +x quitarpubli.sh
 
 wget https://dl.google.com/linux/direct/chrome-remote-desktop_current_amd64.deb
-
-sudo apt-get update --fix-missing
 
 sudo apt install -y ./chrome-remote-desktop_current_amd64.deb
 
