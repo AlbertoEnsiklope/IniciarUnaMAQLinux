@@ -32,12 +32,19 @@ expect {
     "Pulse ENTER para continuar" { send "\r"; exp_continue }
     eof
 }
+sleep 40
 send "\r"
+sleep 1
 send "\r"
+sleep 1
 send "\r"
+sleep 1
 send "\r"
+sleep 1
 send "\r"
+sleep 1
 send "84\r"
+sleep 1
 send "8\r"
 expect eof
 '
