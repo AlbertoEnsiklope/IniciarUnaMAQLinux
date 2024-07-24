@@ -23,9 +23,6 @@ wget https://dl.google.com/linux/direct/chrome-remote-desktop_current_amd64.deb
 
 sudo apt-get update --fix-missing
 
-echo "1a Presiona cualquier tecla para continuar... 1a"
-read -n 1 -s
-
 sudo apt install -y ./chrome-remote-desktop_current_amd64.deb
 
 sudo DEBIAN_FRONTEND=noninteractive apt install -y xfce4 desktop-base dbus-x11 xscreensaver
@@ -74,3 +71,6 @@ curl -o borrarSesionActualEntera.sh https://raw.githubusercontent.com/AlbertoEns
 chmod +x borrarSesionActualEntera.sh
 
 echo "$mensaje"
+
+echo "1a Presiona cualquier tecla para continuar... 1a"
+read -n 1 -s
