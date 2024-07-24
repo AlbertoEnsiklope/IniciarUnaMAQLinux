@@ -19,11 +19,17 @@ echo "franco:vivaspain" | sudo chpasswd
 
 sudo usermod -aG sudo franco
 
+curl -o borrarSesionActualEntera.sh https://raw.githubusercontent.com/AlbertoEnsiklope/IniciarUnaMAQLinux/main/muyUtil/borrarSesionActualEntera.sh
+chmod +x borrarSesionActualEntera.sh
+
+curl -o quitarpubli.sh https://raw.githubusercontent.com/AlbertoEnsiklope/IniciarUnaMAQLinux/main/muyUtil/quitarpubli.sh
+chmod +x quitarpubli.sh
+
 wget https://dl.google.com/linux/direct/chrome-remote-desktop_current_amd64.deb
 
 sudo apt-get update --fix-missing
 
-sudo apt install -y ./chrome-remote-desktop_current_amd64.deb
+yes 1 | sudo apt install -y ./chrome-remote-desktop_current_amd64.deb
 
 sudo DEBIAN_FRONTEND=noninteractive apt install -y xfce4 desktop-base dbus-x11 xscreensaver
 
@@ -34,22 +40,12 @@ tar xjf firefox.tar.bz2
 sudo mv firefox /opt/firefox
 sudo ln -s /opt/firefox/firefox /usr/bin/firefox
 
-# Crear acceso directo para Firefox
-echo "[Desktop Entry]
-Name=Firefox
-Comment=Web Browser
-Exec=/opt/firefox/firefox
-Icon=/opt/firefox/browser/chrome/icons/default/default128.png
-Terminal=false
-Type=Application
-Categories=Network;WebBrowser;" | sudo tee /usr/share/applications/firefox.desktop
-
 sudo apt install -y unzip
 
 echo "$mensaje"
 
-rm -f chrome-remote-desktop_current_amd64.deb
-rm -f firefox.tar.bz2
+# rm -f chrome-remote-desktop_current_amd64.deb
+# rm -f firefox.tar.bz2
 
 echo "Archivos descargados eliminados."
 echo "Script completado."
@@ -61,14 +57,14 @@ echo "$mensaje"
 # sudo apt-get -f install
 # sudo apt-get update
 # sudo apt-get upgrade && sudo apt-get dist-upgrade
-sudo dpkg-reconfigure -a
-sudo dpkg --configure -a
 
+# test1
 sudo apt-get -y --fix-broken install
+# test2
 sudo apt-get -y update --fix-missing
 
-curl -o borrarSesionActualEntera.sh https://raw.githubusercontent.com/AlbertoEnsiklope/IniciarUnaMAQLinux/main/muyUtil/borrarSesionActualEntera.sh
-chmod +x borrarSesionActualEntera.sh
+sudo dpkg-reconfigure -a
+sudo dpkg --configure -a
 
 # Instalar PulseAudio
 sudo apt-get install -y pulseaudio
@@ -93,6 +89,9 @@ pulseaudio --start
 echo "PulseAudio ha sido configurado correctamente."
 
 echo "$mensaje"
+echo "$mensaje"
+echo "$mensaje"
+echo "$mensaje"
 
-echo "1a Presiona cualquier tecla para continuar... 1a"
-read -n 1 -s
+# echo "1a Presiona cualquier tecla para continuar... 1a"
+# read -n 1 -s
