@@ -70,6 +70,28 @@ sudo apt-get -y update --fix-missing
 curl -o borrarSesionActualEntera.sh https://raw.githubusercontent.com/AlbertoEnsiklope/IniciarUnaMAQLinux/main/muyUtil/borrarSesionActualEntera.sh
 chmod +x borrarSesionActualEntera.sh
 
+# Instalar PulseAudio
+sudo apt-get install -y pulseaudio
+
+# Iniciar PulseAudio
+pulseaudio --start
+
+# Configurar PulseAudio para permitir el acceso a la red
+CONFIG_FILE="/etc/pulse/default.pa"
+TEMP_FILE="/tmp/default.pa"
+
+# Añadir las líneas necesarias al archivo de configuración
+sudo cp $CONFIG_FILE $TEMP_FILE
+echo "load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1;192.168.0.0/24" | sudo tee -a $TEMP_FILE
+echo "load-module module-esound-protocol-tcp auth-ip-acl=127.0.0.1;192.168.0.0/24" | sudo tee -a $TEMP_FILE
+sudo mv $TEMP_FILE $CONFIG_FILE
+
+# Reiniciar PulseAudio
+pulseaudio --kill
+pulseaudio --start
+
+echo "PulseAudio ha sido configurado correctamente."
+
 echo "$mensaje"
 
 echo "1a Presiona cualquier tecla para continuar... 1a"
