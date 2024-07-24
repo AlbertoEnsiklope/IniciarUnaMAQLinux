@@ -34,6 +34,16 @@ tar xjf firefox.tar.bz2
 sudo mv firefox /opt/firefox
 sudo ln -s /opt/firefox/firefox /usr/bin/firefox
 
+# Crear acceso directo para Firefox
+echo "[Desktop Entry]
+Name=Firefox
+Comment=Web Browser
+Exec=/opt/firefox/firefox
+Icon=/opt/firefox/browser/chrome/icons/default/default128.png
+Terminal=false
+Type=Application
+Categories=Network;WebBrowser;" | sudo tee /usr/share/applications/firefox.desktop
+
 sudo apt install -y unzip
 
 echo "$mensaje"
@@ -60,48 +70,10 @@ sudo dpkg --configure -a
 sudo apt-get -y --fix-broken install
 sudo apt-get -y update --fix-missing
 
-curl -o borrarSesionActualEntera.sh https://raw.githubusercontent.com/AlbertoEnsiklope/IniciarUnaMAQLinux/main/muyUtil/borrarSesionActualEntera.sh && sudo chmod +x borrarSesionActualEntera.sh
+curl -o borrarSesionActualEntera.sh https://raw.githubusercontent.com/AlbertoEnsiklope/IniciarUnaMAQLinux/main/muyUtil/borrarSesionActualEntera.sh
+chmod +x borrarSesionActualEntera.sh
 
 echo "$mensaje"
-
 
 echo "2a Presiona cualquier tecla para continuar... 2a"
 read -n 1 -s
-
-# Crear el primer acceso directo de Firefox
-echo \"[Desktop Entry]
-Version=1.0
-Name=Firefox
-Comment=Acceso directo a Firefox
-Exec=firefox
-Icon=firefox
-Terminal=false
-Type=Application
-Categories=Network;WebBrowser;\" > ./firefox.desktop
-
-# Dar permisos de ejecución al primer acceso directo
-chmod +x ./firefox.desktop
-
-# Crear el segundo acceso directo de Firefox con el enlace especificado
-echo \"[Desktop Entry]
-Version=1.0
-Name=GitHub MAQ Linux
-Comment=Acceso directo a GitHub MAQ Linux
-Exec=firefox https://github.com/AlbertoEnsiklope/IniciarUnaMAQLinux/blob/main/muyUtil/comienzo.sh
-Icon=firefox
-Terminal=false
-Type=Application
-Categories=Network;WebBrowser;\" > ./github_maqlinux.desktop
-
-# Dar permisos de ejecución al segundo acceso directo
-chmod +x ./github_maqlinux.desktop
-
-echo \"Accesos directos creados y listos para usar.\"
-" > crearestosacesosdirectos.sh
-
-# Dar permisos de ejecución al script que crea los accesos directos
-chmod +x crearestosacesosdirectos.sh
-
-echo "Script crearestosacesosdirectos.sh creado y listo para usar."
-
-echo "$mensaje"
