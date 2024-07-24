@@ -3,10 +3,8 @@
 mensaje="ACCEDER A Chrome Remote Desktop Access: https://remotedesktop.google.com RECORDAR PIN: 123456"
 cd ~
 
-# Archivo de estado
 estado_file="$HOME/.estado_instalacion"
 
-# Función para instalar Chrome Remote Desktop
 instalar_remote_desktop() {
     sudo apt-get update
     sudo apt-get update --fix-missing
@@ -46,11 +44,9 @@ instalar_remote_desktop() {
 
     echo "$mensaje"
 
-    # Marcar la instalación como completada
     echo "remote_desktop_instalado" > "$estado_file"
 }
 
-# Función para ejecutar el resto del script
 ejecutar_resto() {
     sudo apt-get update
     sudo apt-get update --fix-missing
@@ -112,7 +108,6 @@ ejecutar_resto() {
     echo "$mensaje"
 }
 
-# Verificar si Chrome Remote Desktop ya está instalado
 if [ ! -f "$estado_file" ]; then
     instalar_remote_desktop
 else
