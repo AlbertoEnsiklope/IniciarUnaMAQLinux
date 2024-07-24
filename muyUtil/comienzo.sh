@@ -29,7 +29,7 @@ wget https://dl.google.com/linux/direct/chrome-remote-desktop_current_amd64.deb
 
 sudo apt-get update --fix-missing
 
-yes 1 | sudo apt install -y ./chrome-remote-desktop_current_amd64.deb
+sudo apt install -y ./chrome-remote-desktop_current_amd64.deb
 
 sudo DEBIAN_FRONTEND=noninteractive apt install -y xfce4 desktop-base dbus-x11 xscreensaver
 
