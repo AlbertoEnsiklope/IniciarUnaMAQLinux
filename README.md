@@ -5,6 +5,17 @@ cd && curl -o comienzo.sh https://raw.githubusercontent.com/AlbertoEnsiklope/Ini
 ```
 
 
+
+
+
+
+
+
+
+
+
+
+
 ## cd && curl -o comienzo.sh https://raw.githubusercontent.com/AlbertoEnsiklope/IniciarUnaMAQLinux/main/muyUtil/comienzo.sh && sudo chmod +x comienzo.sh && sudo sh ./comienzo.sh && curl -o borrarSesionActualEntera.sh https://raw.githubusercontent.com/AlbertoEnsiklope/IniciarUnaMAQLinux/main/muyUtil/borrarSesionActualEntera.sh && sudo chmod +x borrarSesionActualEntera.sh
 
 
