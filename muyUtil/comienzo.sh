@@ -1,6 +1,6 @@
 #!/bin/bash
 mensaje="ACCEDER A Chrome Remote Desktop Access: https://remotedesktop.google.com RECORDAR PIN: 123456"
-cd
+cd ~
 # CURRENT_USER=$(logname)
 # sudo usermod -aG sudo "$CURRENT_USER"
 
