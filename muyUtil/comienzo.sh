@@ -5,18 +5,42 @@ cd ~
 sudo apt-get update
 sudo apt-get update --fix-missing
 
-curl -o borrarSesionActualEntera.sh https://raw.githubusercontent.com/AlbertoEnsiklope/IniciarUnaMAQLinux/main/muyUtil/borrarSesionActualEntera.sh
-sudo chmod +x borrarSesionActualEntera.sh
+sudo apt-get install -y expect
 
-curl -o quitarpubli.sh https://raw.githubusercontent.com/AlbertoEnsiklope/IniciarUnaMAQLinux/main/muyUtil/quitarpubli.sh
-sudo chmod +x quitarpubli.sh
+download_and_verify() {
+    local url=$1
+    local output=$2
+    curl -o $output $url
+    if [ ! -f $output ];then
+        echo "Error: $output no se descargó correctamente."
+        exit 1
+    fi
+    sudo chmod +x $output
+}
 
-curl -o volverAinstalac.sh https://raw.githubusercontent.com/AlbertoEnsiklope/IniciarUnaMAQLinux/main/muyUtil/volverAinstalac.sh
-sudo chmod +x volverAinstalac.sh
+download_and_verify "https://raw.githubusercontent.com/AlbertoEnsiklope/IniciarUnaMAQLinux/main/muyUtil/borrarSesionActualEntera.sh" "borrarSesionActualEntera.sh"
+download_and_verify "https://raw.githubusercontent.com/AlbertoEnsiklope/IniciarUnaMAQLinux/main/muyUtil/quitarpubli.sh" "quitarpubli.sh"
+download_and_verify "https://raw.githubusercontent.com/AlbertoEnsiklope/IniciarUnaMAQLinux/main/muyUtil/volverAinstalac.sh" "volverAinstalac.sh"
 
 wget https://dl.google.com/linux/direct/chrome-remote-desktop_current_amd64.deb
 
-sudo apt install -y ./chrome-remote-desktop_current_amd64.deb
+expect -c '
+spawn sudo apt install ./chrome-remote-desktop_current_amd64.deb
+expect {
+    "Do you want to continue? \\\[Y/n\\\]" { send "Y\r"; exp_continue }
+    "Configurando chrome-remote-desktop" { send "\r"; exp_continue }
+    "Pulse ENTER para continuar" { send "\r"; exp_continue }
+    eof
+}
+send "\r"
+send "\r"
+send "\r"
+send "\r"
+send "\r"
+send "84\r"
+send "8\r"
+expect eof
+'
 
 sudo DEBIAN_FRONTEND=noninteractive apt install -y xfce4 desktop-base dbus-x11 xscreensaver
 
