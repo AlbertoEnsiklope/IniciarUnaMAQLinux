@@ -36,8 +36,8 @@ echo "$mensaje"
 # rm -f chrome-remote-desktop_current_amd64.deb
 # rm -f firefox.tar.bz2
 
-echo "Archivos descargados eliminados."
-echo "Script completado."
+# echo "Archivos descargados eliminados."
+# echo "Script completado."
 
 echo "$mensaje"
 
