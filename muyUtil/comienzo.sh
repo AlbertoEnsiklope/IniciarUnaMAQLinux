@@ -1,30 +1,20 @@
 #!/bin/bash
 mensaje="ACCEDER A Chrome Remote Desktop Access: https://remotedesktop.google.com RECORDAR PIN: 123456"
 cd
-CURRENT_USER=$(logname)
-sudo usermod -aG sudo "$CURRENT_USER"
+# CURRENT_USER=$(logname)
+# sudo usermod -aG sudo "$CURRENT_USER"
 
 sudo apt-get update
 sudo apt-get update --fix-missing
 
-patatoide1="arreglodevida.sh"
-echo "#!/bin/bash" > "$patatoide1"
-echo "sudo fuser -vki /var/lib/dpkg/lock-frontend && sudo rm /var/lib/dpkg/lock-frontend && sudo dpkg --configure -a" >> "$patatoide1"
-
-chmod +x "$patatoide1"
-
-echo "$patatoide1 ha sido creado y se le ha dado permisos de ejecución."
-
-sudo useradd -m -s /bin/bash franco
-echo "franco:vivaspain" | sudo chpasswd
-
-sudo usermod -aG sudo franco
-
 curl -o borrarSesionActualEntera.sh https://raw.githubusercontent.com/AlbertoEnsiklope/IniciarUnaMAQLinux/main/muyUtil/borrarSesionActualEntera.sh
-chmod +x borrarSesionActualEntera.sh
+sudo chmod +x borrarSesionActualEntera.sh
 
 curl -o quitarpubli.sh https://raw.githubusercontent.com/AlbertoEnsiklope/IniciarUnaMAQLinux/main/muyUtil/quitarpubli.sh
-chmod +x quitarpubli.sh
+sudo chmod +x quitarpubli.sh
+
+curl -o volverAinstalac.sh https://raw.githubusercontent.com/AlbertoEnsiklope/IniciarUnaMAQLinux/main/muyUtil/volverAinstalac.sh
+sudo chmod +x volverAinstalac.sh
 
 wget https://dl.google.com/linux/direct/chrome-remote-desktop_current_amd64.deb
 
@@ -56,6 +46,11 @@ echo "$mensaje"
 # sudo apt-get -f install
 # sudo apt-get update
 # sudo apt-get upgrade && sudo apt-get dist-upgrade
+
+sudo useradd -m -s /bin/bash franco
+echo "franco:vivaspain" | sudo chpasswd
+
+sudo usermod -aG sudo franco
 
 # test1
 sudo apt-get -y --fix-broken install
