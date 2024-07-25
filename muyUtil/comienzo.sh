@@ -107,7 +107,7 @@ ejecutar_resto() {
     echo "load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1;192.168.0.0/24" | sudo tee -a $TEMP_FILE
     echo "load-module module-esound-protocol-tcp auth-ip-acl=127.0.0.1;192.168.0.0/24" | sudo tee -a $TEMP_FILE
     sudo mv $TEMP_FILE $CONFIG_FILE
-
+    
     pulseaudio --kill
     pulseaudio --start
 
