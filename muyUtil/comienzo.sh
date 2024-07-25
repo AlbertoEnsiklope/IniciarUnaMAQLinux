@@ -136,11 +136,16 @@ if [ "$1" == "ejecutar_resto" ]; then
     echo "Ejecutando la segunda parte del script..."
     ejecutar_resto
 else
-    if [ ! -f "$estado_file" ]; then
-        echo "El archivo de estado no existe. Ejecutando instalar_remote_desktop..."
-        instalar_remote_desktop
-    else
-        echo "El archivo de estado existe. Ejecutando ejecutar_resto..."
+    if [ -d "$HOME/Desktop" ]; then
+        echo "El directorio Desktop existe. Ejecutando ejecutar_resto..."
         ejecutar_resto
+    else
+        if [ ! -f "$estado_file" ]; then
+            echo "El archivo de estado no existe. Ejecutando instalar_remote_desktop..."
+            instalar_remote_desktop
+        else
+            echo "El archivo de estado existe. Ejecutando ejecutar_resto..."
+            ejecutar_resto
+        fi
     fi
 fi
