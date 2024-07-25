@@ -70,7 +70,6 @@ ejecutar_resto() {
         curl -o $output $url
         if [ ! -f $output ]; then
             echo "Error: $output no se descargó correctamente."
-            exit 1
         fi
         sudo chmod +x $output
     }
