@@ -92,10 +92,12 @@ ejecutar_resto() {
     download_and_verify "https://raw.githubusercontent.com/AlbertoEnsiklope/IniciarUnaMAQLinux/main/muyUtil/quitarpubli.sh" "quitarpubliB.sh" "$HOME/Desktop"
     download_and_verify "https://raw.githubusercontent.com/AlbertoEnsiklope/IniciarUnaMAQLinux/main/muyUtil/aVolver.sh" "aIniciarVirtualDesk.sh" "$HOME"
     
-    wget -O firefox.tar.bz2 "https://download.mozilla.org/?product=firefox-latest&os=linux64&lang=es-ES"
-    tar xjf firefox.tar.bz2
-    sudo mv firefox /opt/firefox
-    sudo ln -s /opt/firefox/firefox /usr/bin/firefox
+    # wget -O firefox.tar.bz2 "https://download.mozilla.org/?product=firefox-latest&os=linux64&lang=es-ES"
+    # tar xjf firefox.tar.bz2
+    # sudo mv firefox /opt/firefox
+    # sudo ln -s /opt/firefox/firefox /usr/bin/firefox
+
+    sudo apt install xvfb xfce4 xfce4-goodies mpv kdenlive simplescreenrecorder firefox-esr plank papirus-icon-theme dbus-x11 neofetch krita --assume-yes
 
     sudo apt install -y unzip
 
