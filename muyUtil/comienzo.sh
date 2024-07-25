@@ -47,6 +47,7 @@ instalar_remote_desktop() {
     echo "exec /etc/X11/Xsession /usr/bin/xfce4-session" | sudo tee /etc/chrome-remote-desktop-session
 
     echo "remote_desktop_instalado" > "$estado_file"
+    chmod 444 "$estado_file"
     
     echo "$mensaje"
     echo "$mensaje"
