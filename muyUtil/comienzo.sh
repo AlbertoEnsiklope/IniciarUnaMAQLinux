@@ -6,6 +6,11 @@ cd ~
 estado_file="$HOME/.estado_instalacion"
 
 instalar_remote_desktop() {
+    if [ -f "$estado_file" ]; then
+        echo "La instalación de Chrome Remote Desktop ya se ha realizado. Saltando esta parte."
+        return
+    fi
+
     echo "1A PARTE"
     sudo apt-get update
     sudo apt-get update --fix-missing
