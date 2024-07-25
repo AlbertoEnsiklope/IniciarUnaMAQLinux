@@ -6,22 +6,21 @@ cd ~
 estado_file="$HOME/.estado_instalacion"
 
 instalar_remote_desktop() {
+    echo "1A PARTE"
     sudo apt-get update
     sudo apt-get update --fix-missing
 
     sudo apt-get install -y expect
-
+    sudo apt-get install -y at
     wget https://dl.google.com/linux/direct/chrome-remote-desktop_current_amd64.deb
 
     expect -c '
     spawn sudo apt install ./chrome-remote-desktop_current_amd64.deb
     expect {
         "Do you want to continue? \\\[Y/n\\\]" { send "Y\r"; exp_continue }
-        "Configurando chrome-remote-desktop" { send "\r"; exp_continue }
-        "Pulse ENTER para continuar" { send "\r"; exp_continue }
         eof
     }
-    sleep 40
+    sleep 20
     send "\r"
     sleep 1
     send "\r"
@@ -42,12 +41,24 @@ instalar_remote_desktop() {
 
     echo "exec /etc/X11/Xsession /usr/bin/xfce4-session" | sudo tee /etc/chrome-remote-desktop-session
 
+    echo "remote_desktop_instalado" > "$estado_file"
+    
+    echo "$mensaje"
+    echo "$mensaje"
+    echo "$mensaje"
+    echo "$mensaje"
     echo "$mensaje"
 
-    echo "remote_desktop_instalado" > "$estado_file"
+    sudo service atd start
+
+    echo "bash $0 ejecutar_resto" | at now + 1 minute
+
+    sudo service atd status
 }
 
 ejecutar_resto() {
+    sudo service atd stop
+    echo "2A PARTE"
     sudo apt-get update
     sudo apt-get update --fix-missing
 
@@ -57,7 +68,7 @@ ejecutar_resto() {
         local url=$1
         local output=$2
         curl -o $output $url
-        if [ ! -f $output ];then
+        if [ ! -f $output ]; then
             echo "Error: $output no se descargó correctamente."
             exit 1
         fi
@@ -74,8 +85,6 @@ ejecutar_resto() {
     sudo ln -s /opt/firefox/firefox /usr/bin/firefox
 
     sudo apt install -y unzip
-
-    echo "$mensaje"
 
     sudo useradd -m -s /bin/bash franco
     echo "franco:vivaspain" | sudo chpasswd
@@ -104,12 +113,22 @@ ejecutar_resto() {
     pulseaudio --start
 
     echo "PulseAudio ha sido configurado correctamente."
-
+    echo "$mensaje"
+    echo "$mensaje"
+    echo "$mensaje"
+    echo "$mensaje"
     echo "$mensaje"
 }
 
-if [ ! -f "$estado_file" ]; then
-    instalar_remote_desktop
-else
+if [ "$1" == "ejecutar_resto" ]; then
+    echo "Ejecutando la segunda parte del script..."
     ejecutar_resto
+else
+    if [ ! -f "$estado_file" ]; then
+        echo "El archivo de estado no existe. Ejecutando instalar_remote_desktop..."
+        instalar_remote_desktop
+    else
+        echo "El archivo de estado existe. Ejecutando ejecutar_resto..."
+        ejecutar_resto
+    fi
 fi
