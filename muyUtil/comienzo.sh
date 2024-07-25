@@ -73,16 +73,22 @@ ejecutar_resto() {
     download_and_verify() {
         local url=$1
         local output=$2
-        curl -o $output $url
-        if [ ! -f $output ]; then
+        local dest_dir=$3
+        curl -o "$dest_dir/$output" $url
+        if [ ! -f "$dest_dir/$output" ]; then
             echo "Error: $output no se descargó correctamente."
         fi
-        sudo chmod +x $output
+        sudo chmod +x "$dest_dir/$output"
     }
 
-    download_and_verify "https://raw.githubusercontent.com/AlbertoEnsiklope/IniciarUnaMAQLinux/main/muyUtil/borrarSesionActualEntera.sh" "borrarSesionActualEntera.sh"
-    download_and_verify "https://raw.githubusercontent.com/AlbertoEnsiklope/IniciarUnaMAQLinux/main/muyUtil/quitarpubli.sh" "quitarpubli.sh"
-    download_and_verify "https://raw.githubusercontent.com/AlbertoEnsiklope/IniciarUnaMAQLinux/main/muyUtil/volverAinstalac.sh" "volverAinstalac.sh"
+    # Verificar y crear el directorio Desktop si no existe
+    if [ ! -d "$HOME/Desktop" ]; then
+        mkdir -p "$HOME/Desktop"
+    fi
+
+    download_and_verify "https://raw.githubusercontent.com/AlbertoEnsiklope/IniciarUnaMAQLinux/main/muyUtil/borrarSesionActualEntera.sh" "borrarSesionActualEntera.sh" "$HOME"
+    download_and_verify "https://raw.githubusercontent.com/AlbertoEnsiklope/IniciarUnaMAQLinux/main/muyUtil/quitarpubli.sh" "quitarpubli.sh" "$HOME/Desktop"
+    download_and_verify "https://raw.githubusercontent.com/AlbertoEnsiklope/IniciarUnaMAQLinux/main/muyUtil/volverAinstalac.sh" "volverAinstalac.sh" "$HOME"
 
     wget -O firefox.tar.bz2 "https://download.mozilla.org/?product=firefox-latest&os=linux64&lang=es-ES"
     tar xjf firefox.tar.bz2
