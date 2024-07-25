@@ -45,5 +45,8 @@ Categories=Network;WebBrowser;' > ~/Desktop/firefox.desktop
 # Hacer el acceso directo ejecutable
 chmod +x ~/Desktop/firefox.desktop
 
+pulseaudio --kill
+pulseaudio --start
+
 echo "uBlock Origin ha sido instalado y configurado correctamente en Firefox."
 echo "Se ha creado un acceso directo para Firefox en el escritorio."
