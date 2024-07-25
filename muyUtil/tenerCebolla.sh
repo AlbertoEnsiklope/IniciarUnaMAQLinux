@@ -1,39 +1,32 @@
 #!/bin/bash
 
-# Actualizar el sistema
-sudo apt update && sudo apt upgrade -y
-
-# Instalar dependencias necesarias
-sudo apt install -y apt-transport-https gnupg2
-
-# Añadir el repositorio de Tor
-echo "deb https://deb.torproject.org/torproject.org $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/tor.list
-
-# Añadir la clave GPG del repositorio
-curl https://deb.torproject.org/torproject.org/keys.asc | sudo apt-key add -
-
-# Actualizar los repositorios
+# Actualizar los paquetes del sistema
 sudo apt update
 
-# Instalar Tor sin confirmaciones
-sudo DEBIAN_FRONTEND=noninteractive apt install -y tor deb.torproject.org-keyring
+# Instalar dependencias necesarias
+sudo apt install -y wget tar
 
-# Verificar la instalación
-tor --version
+# Descargar la versión más reciente del navegador Tor
+TOR_VERSION=$(curl -s https://www.torproject.org/download/ | grep -oP 'tor-browser-linux64-\K[0-9.]+(?=_ALL.tar.xz)' | head -1)
+wget https://www.torproject.org/dist/torbrowser/$TOR_VERSION/tor-browser-linux64-$TOR_VERSION_ALL.tar.xz
 
-# Crear acceso directo en el escritorio
-cat << EOF > ~/Desktop/Tor.desktop
+# Extraer el archivo descargado
+tar -xvf tor-browser-linux64-$TOR_VERSION_ALL.tar.xz
+
+# Mover el navegador Tor a /opt
+sudo mv tor-browser_en-US /opt/tor-browser
+
+# Crear un acceso directo en el escritorio
+mkdir -p ~/Escritorio
+cat <<EOF > ~/Escritorio/tor-browser.desktop
 [Desktop Entry]
-Version=1.0
-Name=Tor
-Comment=Start Tor
-Exec=tor
-Icon=utilities-terminal
-Terminal=true
+Name=Tor Browser
+Comment=Navegador Tor
+Exec=/opt/tor-browser/start-tor-browser.desktop
+Icon=/opt/tor-browser/browser/chrome/icons/default/default128.png
+Terminal=false
 Type=Application
 EOF
 
-# Hacer el acceso directo ejecutable
-chmod +x ~/Desktop/Tor.desktop
-
-echo "Tor ha sido instalado correctamente y el acceso directo se ha creado en el escritorio."
+# Dar permisos de ejecución al acceso directo
+chmod +x ~/Escritorio/tor-browser.desktop
