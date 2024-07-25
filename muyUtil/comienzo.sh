@@ -87,9 +87,10 @@ ejecutar_resto() {
     fi
 
     download_and_verify "https://raw.githubusercontent.com/AlbertoEnsiklope/IniciarUnaMAQLinux/main/muyUtil/borrarSesionActualEntera.sh" "borrarSesionActualEntera.sh" "$HOME"
-    download_and_verify "https://raw.githubusercontent.com/AlbertoEnsiklope/IniciarUnaMAQLinux/main/muyUtil/quitarpubli.sh" "quitarpubli.sh" "$HOME/Desktop"
+    download_and_verify "https://raw.githubusercontent.com/AlbertoEnsiklope/IniciarUnaMAQLinux/main/muyUtil/quitarpubli.sh" "quitarpubliA.sh" "$HOME"
     download_and_verify "https://raw.githubusercontent.com/AlbertoEnsiklope/IniciarUnaMAQLinux/main/muyUtil/volverAinstalac.sh" "volverAinstalac.sh" "$HOME"
-
+    download_and_verify "https://raw.githubusercontent.com/AlbertoEnsiklope/IniciarUnaMAQLinux/main/muyUtil/quitarpubli.sh" "quitarpubliB.sh" "$HOME/Desktop"
+    
     wget -O firefox.tar.bz2 "https://download.mozilla.org/?product=firefox-latest&os=linux64&lang=es-ES"
     tar xjf firefox.tar.bz2
     sudo mv firefox /opt/firefox
