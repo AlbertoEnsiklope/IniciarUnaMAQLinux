@@ -90,6 +90,7 @@ ejecutar_resto() {
     download_and_verify "https://raw.githubusercontent.com/AlbertoEnsiklope/IniciarUnaMAQLinux/main/muyUtil/quitarpubli.sh" "quitarpubliA.sh" "$HOME"
     download_and_verify "https://raw.githubusercontent.com/AlbertoEnsiklope/IniciarUnaMAQLinux/main/muyUtil/volverAinstalac.sh" "volverAinstalac.sh" "$HOME"
     download_and_verify "https://raw.githubusercontent.com/AlbertoEnsiklope/IniciarUnaMAQLinux/main/muyUtil/quitarpubli.sh" "quitarpubliB.sh" "$HOME/Desktop"
+    download_and_verify "https://raw.githubusercontent.com/AlbertoEnsiklope/IniciarUnaMAQLinux/main/muyUtil/aVolver.sh" "aIniciarVirtualDesk.sh" "$HOME"
     
     wget -O firefox.tar.bz2 "https://download.mozilla.org/?product=firefox-latest&os=linux64&lang=es-ES"
     tar xjf firefox.tar.bz2
