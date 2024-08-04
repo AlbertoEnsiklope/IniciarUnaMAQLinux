@@ -41,6 +41,8 @@ instalar_remote_desktop() {
     send "84\r"
     sleep 1
     send "8\r"
+    sleep 1
+    send "\r"
     expect eof
     '
 
