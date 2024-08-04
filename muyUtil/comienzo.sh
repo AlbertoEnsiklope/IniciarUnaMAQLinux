@@ -25,7 +25,7 @@ instalar_remote_desktop() {
         "Do you want to continue? \\\[Y/n\\\]" { send "Y\r"; exp_continue }
         eof
     }
-    sleep 5
+    sleep 25
     send "\r"
     sleep 1
     send "\r"
@@ -41,8 +41,6 @@ instalar_remote_desktop() {
     send "84\r"
     sleep 1
     send "8\r"
-    sleep 1
-    send "\r"
     expect eof
     '
 
