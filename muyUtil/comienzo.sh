@@ -54,7 +54,8 @@ instalar_remote_desktop() {
 
     echo "remote_desktop_instalado" > "$estado_file"
     chmod 444 "$estado_file"
-    
+
+    touch acabadaPT1
     echo "$mensaje"
     echo "$mensaje"
     echo "$mensaje"
@@ -134,6 +135,8 @@ ejecutar_resto() {
     pulseaudio --start
 
     echo "PulseAudio ha sido configurado correctamente."
+
+    touch acabadaPT2
     echo "$mensaje"
     echo "$mensaje"
     echo "$mensaje"
