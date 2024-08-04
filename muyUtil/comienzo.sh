@@ -25,11 +25,9 @@ instalar_remote_desktop() {
         "Do you want to continue? \\\[Y/n\\\]" { send "Y\r"; exp_continue }
         eof
     }
-    sleep 30
+    sleep 26
     send "\r"
-    sleep 1
-    send "\r"
-    sleep 1
+    sleep 10
     send "\r"
     sleep 1
     send "\r"
