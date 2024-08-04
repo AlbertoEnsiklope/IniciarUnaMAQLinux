@@ -38,8 +38,6 @@ instalar_remote_desktop() {
     sleep 1
     send "\r"
     sleep 1
-    send "\r"
-    sleep 1
     send "84\r"
     sleep 1
     send "8\r"
