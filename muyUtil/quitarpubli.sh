@@ -48,5 +48,17 @@ chmod +x ~/Desktop/firefox.desktop
 pulseaudio --kill
 pulseaudio --start
 
+PROFILE_DIR=$(ls ~/.mozilla/firefox/ | grep '.default-release')
+USER_AGENT="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36"
+
+if [ -z "$PROFILE_DIR" ]; then
+    echo "Profile directory not found!"
+    exit 1
+fi
+
+echo "user_pref(\"general.useragent.override\", \"$USER_AGENT\");" >> ~/.mozilla/firefox/$PROFILE_DIR/user.js
+
+echo "User agent set to: $USER_AGENT"
+
 echo "uBlock Origin ha sido instalado y configurado correctamente en Firefox."
 echo "Se ha creado un acceso directo para Firefox en el escritorio."
