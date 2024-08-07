@@ -1,6 +1,6 @@
 #!/bin/bash
 
-mensaje="ACCEDER A Chrome Remote Desktop Access: https://remotedesktop.google.com RECORDAR PIN: 123456"
+mensaje="ACCEDER A Chrome Remote Desktop Access: https://remotedesktop.google.com/headless RECORDAR PIN: 123456"
 cd ~
 
 estado_file="$HOME/.estado_instalacion"
