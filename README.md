@@ -3,7 +3,8 @@
 
 Dentro de docker:
 ```
-cd && curl -o empezarcombo.sh https://raw.githubusercontent.com/AlbertoEnsiklope/IniciarUnaMAQLinux/main/usardocker/empezarcombo.sh && sudo chmod +x empezarcombo.sh && sudo sh ./empezarcombo.sh
+cd && curl -o empezarcombo.sh https://raw.githubusercontent.com/AlbertoEnsiklope/IniciarUnaMAQLinux/main/usardocker/empezarcombo.sh && sudo chmod +x empezarcombo.sh && sh ./empezarcombo.sh
+
 ```
 
 
