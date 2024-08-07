@@ -61,6 +61,13 @@ RUN apt-get update && apt-get install -y \\
 # Crear usuario
 RUN useradd -m -s /bin/bash franco && echo "franco:popo" | chpasswd && usermod -aG sudo franco
 
+# Descargar e instalar Chrome Remote Desktop
+RUN wget https://dl.google.com/linux/direct/chrome-remote-desktop_current_amd64.deb && \\
+    apt install -y ./chrome-remote-desktop_current_amd64.deb
+
+# Configurar Chrome Remote Desktop
+RUN echo "exec /etc/X11/Xsession /usr/bin/xfce4-session" > /etc/chrome-remote-desktop-session
+
 # Copiar archivos descargados al contenedor
 COPY pazVen /home/franco/pazVen
 COPY firefox.tar.bz2 /home/franco/firefox.tar.bz2
@@ -69,9 +76,6 @@ COPY firefox.tar.bz2 /home/franco/firefox.tar.bz2
 RUN tar -xjf /home/franco/firefox.tar.bz2 -C /opt/ && \\
     ln -s /opt/firefox/firefox /usr/bin/firefox && \\
     rm /home/franco/firefox.tar.bz2
-
-# Configurar Chrome Remote Desktop
-RUN echo "exec /etc/X11/Xsession /usr/bin/xfce4-session" > /etc/chrome-remote-desktop-session
 
 # Configurar PulseAudio
 RUN pulseaudio --start && \\
