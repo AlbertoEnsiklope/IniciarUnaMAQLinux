@@ -118,4 +118,7 @@ echo "--------------------------------------------------------------------------
 echo "Para iniciar el contenedor como el usuario franco, usa el siguiente comando:"
 echo "docker run -it --rm --name locomaxed -u franco -v ~/guardadosDocker:/home/franco remote-desktop"
 echo "-----------------------------------------------------------------------------------------------------"
+echo "MODO Detached:"
+echo "docker run -d --rm --name locomaxed -u franco -v ~/guardadosDocker:/home/franco remote-desktop"
+echo "-----------------------------------------------------------------------------------------------------"
 echo "La contraseña para el usuario franco es: popo"
