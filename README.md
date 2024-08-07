@@ -1,6 +1,14 @@
 # IMPORTANTE
 
 
+Dentro de docker:
+```
+cd && curl -o empezarcombo.sh https://raw.githubusercontent.com/AlbertoEnsiklope/IniciarUnaMAQLinux/main/usardocker/empezarcombo.sh && sudo chmod +x empezarcombo.sh && sudo sh ./empezarcombo.sh
+```
+
+
+
+
 Crear desktop remote:
 ```
 cd && curl -o comienzo.sh https://raw.githubusercontent.com/AlbertoEnsiklope/IniciarUnaMAQLinux/main/muyUtil/comienzo.sh && sudo chmod +x comienzo.sh && sudo sh ./comienzo.sh
