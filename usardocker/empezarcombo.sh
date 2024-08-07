@@ -36,11 +36,11 @@ mkdir -p ~/guardadosDocker
 
 mkdir -p ~/guardadosDocker/pazVen
 wget -P ~/guardadosDocker/pazVen https://raw.githubusercontent.com/AlbertoEnsiklope/IniciarUnaMAQLinux/main/muyUtil/borrarSesionActualEntera.sh
-wget -P ~/guardadosDocker/pazVen https://raw.githubusercontent.com/AlbertoEnsiklope/IniciarUnaMAQLinux/main/muyUtil/quitarpubli.sh
+wget -P ~/guardadosDocker/pazVen https://raw.githubusercontent.com/AlbertoEnsiklope/IniciarUnaMAQLinux/main/usardocker/quitarpublivsdocker.sh
 wget -P ~/guardadosDocker/pazVen https://raw.githubusercontent.com/AlbertoEnsiklope/IniciarUnaMAQLinux/main/muyUtil/volverAinstalac.sh
 wget -P ~/guardadosDocker/pazVen https://raw.githubusercontent.com/AlbertoEnsiklope/IniciarUnaMAQLinux/main/muyUtil/aVolver.sh
 wget -P ~/guardadosDocker/pazVen https://raw.githubusercontent.com/AlbertoEnsiklope/IniciarUnaMAQLinux/main/muyUtil/comienzo.sh
-wget -P ~/guardadosDocker/pazVen https://raw.githubusercontent.com/AlbertoEnsiklope/IniciarUnaMAQLinux/main/muyUtil/quitarpubli.sh
+wget -P ~/guardadosDocker/pazVen https://raw.githubusercontent.com/AlbertoEnsiklope/IniciarUnaMAQLinux/main/usardocker/empezarcombo.sh
 
 wget -O ~/guardadosDocker/firefox.tar.bz2 "https://download.mozilla.org/?product=firefox-latest&os=linux64&lang=es-ES"
 
