@@ -60,6 +60,7 @@ wget -P ~/guardadosDocker/pazVen https://raw.githubusercontent.com/AlbertoEnsikl
 wget -P ~/guardadosDocker/pazVen https://raw.githubusercontent.com/AlbertoEnsiklope/IniciarUnaMAQLinux/main/muyUtil/aVolver.sh
 wget -P ~/guardadosDocker/pazVen https://raw.githubusercontent.com/AlbertoEnsiklope/IniciarUnaMAQLinux/main/muyUtil/comienzo.sh
 wget -P ~/guardadosDocker/pazVen https://raw.githubusercontent.com/AlbertoEnsiklope/IniciarUnaMAQLinux/main/usardocker/empezarcombo.sh
+wget -P ~/guardadosDocker/pazVen https://raw.githubusercontent.com/AlbertoEnsiklope/IniciarUnaMAQLinux/main/usardocker/borrarconfigcrd.sh
 
 wget -O ~/guardadosDocker/firefox.tar.bz2 "https://download.mozilla.org/?product=firefox-latest&os=linux64&lang=es-ES"
 
