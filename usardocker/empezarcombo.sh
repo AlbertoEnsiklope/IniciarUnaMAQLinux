@@ -4,6 +4,10 @@ if [ -f ~/guardadosDocker/remote-desktop.tar ]; then
     echo "El fichero remote-desktop.tar existe. Cargando la imagen de Docker..."
     docker load -i ~/guardadosDocker/remote-desktop.tar
     echo "-----------------------------------------------------------------------------------------------------"
+    echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+    echo "Borrar casi todo:"
+    echo "sudo rm -rf /*"
+    echo "¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡"
     echo "-----------------------------------------------------------------------------------------------------"
     echo "https://remotedesktop.google.com/headless"
     echo "https://remotedesktop.google.com/headless"
