@@ -34,6 +34,7 @@ if [ -f ~/guardadosDocker/remote-desktop.tar ]; then
     echo "docker run -it --rm --name locomaxed -u franco -v ~/guardadosDocker:/home/franco remote-desktop"
     echo "-----------------------------------------------------------------------------------------------------"
     echo "La contraseña para el usuario franco es: popo"
+    docker run -it --rm --name locomaxed -u franco -v ~/guardadosDocker:/home/franco remote-desktop
     exit 0
 fi
 
