@@ -103,5 +103,6 @@ echo "User agent set to: $USER_AGENT"
 echo "Puedes descargar las otras extensiones desde los siguientes enlaces:"
 echo "Auth Helper: https://addons.mozilla.org/firefox/addon/auth-helper/"
 echo "Always Visible: https://addons.mozilla.org/firefox/addon/always-visible/"
+echo "https://github.com/AlbertoEnsiklope/IniciarUnaMAQLinux"
 
 echo "Todo listo para usar Firefox y gedit."
