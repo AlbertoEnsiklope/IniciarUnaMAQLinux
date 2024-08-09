@@ -7,19 +7,37 @@ sudo apt-get install -y jq curl
 UBLOCK_URL=$(curl -s https://addons.mozilla.org/api/v4/addons/addon/ublock-origin/ | jq -r '.current_version.files[0].url')
 wget -O ublock_origin.xpi $UBLOCK_URL
 
+# Descargar Auth Helper
+AUTH_HELPER_URL=$(curl -s https://addons.mozilla.org/api/v4/addons/addon/auth-helper/ | jq -r '.current_version.files[0].url')
+wget -O auth_helper.xpi $AUTH_HELPER_URL
+
+# Descargar Always Visible
+ALWAYS_VISIBLE_URL=$(curl -s https://addons.mozilla.org/api/v4/addons/addon/always-visible/ | jq -r '.current_version.files[0].url')
+wget -O always_visible.xpi $ALWAYS_VISIBLE_URL
+
 # Crear el directorio de extensiones si no existe
 mkdir -p ~/.mozilla/extensions
 
-# Mover la extensión descargada al directorio de extensiones
+# Mover las extensiones descargadas al directorio de extensiones
 mv ublock_origin.xpi ~/.mozilla/extensions/
+mv auth_helper.xpi ~/.mozilla/extensions/
+mv always_visible.xpi ~/.mozilla/extensions/
 
-# Configurar Firefox para instalar la extensión
+# Configurar Firefox para instalar las extensiones
 echo '{
   "policies": {
     "ExtensionSettings": {
       "uBlock0@raymondhill.net": {
         "installation_mode": "force_installed",
         "install_url": "file://'$HOME'/.mozilla/extensions/ublock_origin.xpi"
+      },
+      "auth-helper@mozilla.org": {
+        "installation_mode": "force_installed",
+        "install_url": "file://'$HOME'/.mozilla/extensions/auth_helper.xpi"
+      },
+      "always-visible@mozilla.org": {
+        "installation_mode": "force_installed",
+        "install_url": "file://'$HOME'/.mozilla/extensions/always_visible.xpi"
       }
     }
   }
@@ -42,8 +60,19 @@ Terminal=false
 Type=Application
 Categories=Network;WebBrowser;' > ~/Desktop/firefox.desktop
 
-# Hacer el acceso directo ejecutable
+# Crear un acceso directo para gedit
+echo '[Desktop Entry]
+Name=Gedit
+Comment=Text Editor
+Exec=gedit
+Icon=gedit
+Terminal=false
+Type=Application
+Categories=Utility;TextEditor;' > ~/Desktop/gedit.desktop
+
+# Hacer los accesos directos ejecutables
 chmod +x ~/Desktop/firefox.desktop
+chmod +x ~/Desktop/gedit.desktop
 
 # Iniciar Firefox para crear el perfil
 firefox &
@@ -71,5 +100,4 @@ echo "user_pref(\"general.useragent.override\", \"$USER_AGENT\");" >> ~/.mozilla
 
 echo "User agent set to: $USER_AGENT"
 
-echo "uBlock Origin ha sido instalado y configurado correctamente en Firefox."
-echo "Se ha creado un acceso directo para Firefox en el escritorio."
+echo "Todo listo para usar Firefox y gedit."
