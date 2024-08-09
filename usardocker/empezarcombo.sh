@@ -95,7 +95,8 @@ RUN apt-get update && apt-get install -y \\
     pulseaudio \\
     sudo \\
     bzip2 \\
-    nano
+    nano \\
+    gedit 
 
 RUN useradd -m -s /bin/bash franco && echo "franco:popo" | chpasswd && usermod -aG sudo franco
 
