@@ -1,56 +1,54 @@
 #!/bin/bash
 
-# Instalar jq y curl para procesar JSON
+sudo apt-get remove --purge -y firefox
+rm -rf ~/.mozilla
+sudo rm -rf /etc/firefox
+
+
+sudo apt-get update
+sudo apt-get install -y firefox
+
 sudo apt-get install -y jq curl
 
-# Descargar la última versión de uBlock Origin
-UBLOCK_URL=$(curl -s https://addons.mozilla.org/api/v4/addons/addon/ublock-origin/ | jq -r '.current_version.files[0].url')
-wget -O ublock_origin.xpi $UBLOCK_URL
 
-# Descargar Auth Helper
-AUTH_HELPER_URL=$(curl -s https://addons.mozilla.org/api/v4/addons/addon/auth-helper/ | jq -r '.current_version.files[0].url')
-wget -O auth_helper.xpi $AUTH_HELPER_URL
+download_extension() {
+    local addon_name=$1
+    local addon_url=$(curl -s "https://addons.mozilla.org/api/v4/addons/addon/$addon_name/" | jq -r '.current_version.files[0].url')
+    wget -O "$addon_name.xpi" "$addon_url"
+    if [ $? -ne 0 ]; then
+        echo "Error al descargar $addon_name"
+        exit 1
+    fi
+}
 
-# Descargar Always Visible
-ALWAYS_VISIBLE_URL=$(curl -s https://addons.mozilla.org/api/v4/addons/addon/always-visible/ | jq -r '.current_version.files[0].url')
-wget -O always_visible.xpi $ALWAYS_VISIBLE_URL
 
-# Crear el directorio de extensiones si no existe
+download_extension "ublock-origin"
+
+
 mkdir -p ~/.mozilla/extensions
 
-# Mover las extensiones descargadas al directorio de extensiones
-mv ublock_origin.xpi ~/.mozilla/extensions/
-mv auth_helper.xpi ~/.mozilla/extensions/
-mv always_visible.xpi ~/.mozilla/extensions/
 
-# Configurar Firefox para instalar las extensiones
+mv ublock-origin.xpi ~/.mozilla/extensions/
+
 echo '{
   "policies": {
     "ExtensionSettings": {
       "uBlock0@raymondhill.net": {
         "installation_mode": "force_installed",
-        "install_url": "file://'$HOME'/.mozilla/extensions/ublock_origin.xpi"
-      },
-      "auth-helper@mozilla.org": {
-        "installation_mode": "force_installed",
-        "install_url": "file://'$HOME'/.mozilla/extensions/auth_helper.xpi"
-      },
-      "always-visible@mozilla.org": {
-        "installation_mode": "force_installed",
-        "install_url": "file://'$HOME'/.mozilla/extensions/always_visible.xpi"
+        "install_url": "file://'$HOME'/.mozilla/extensions/ublock-origin.xpi"
       }
     }
   }
 }' > policies.json
 
-# Mover el archivo de políticas a la ubicación correcta
+
 sudo mkdir -p /etc/firefox/policies
 sudo mv policies.json /etc/firefox/policies/
 
-# Crear el directorio Desktop si no existe
+
 mkdir -p ~/Desktop
 
-# Crear un acceso directo para Firefox
+
 echo '[Desktop Entry]
 Name=Firefox
 Comment=Web Browser
@@ -60,7 +58,7 @@ Terminal=false
 Type=Application
 Categories=Network;WebBrowser;' > ~/Desktop/firefox.desktop
 
-# Crear un acceso directo para gedit
+
 echo '[Desktop Entry]
 Name=Gedit
 Comment=Text Editor
@@ -70,34 +68,40 @@ Terminal=false
 Type=Application
 Categories=Utility;TextEditor;' > ~/Desktop/gedit.desktop
 
-# Hacer los accesos directos ejecutables
+
 chmod +x ~/Desktop/firefox.desktop
 chmod +x ~/Desktop/gedit.desktop
 
-# Iniciar Firefox para crear el perfil
+
 firefox &
 
-# Esperar unos segundos para que Firefox cree el perfil
+
 sleep 10
 
-# Cerrar Firefox
+
 pkill firefox
 
-# Reiniciar PulseAudio
+
 pulseaudio --kill
 pulseaudio --start
 
-# Configurar el user agent en Firefox
 PROFILE_DIR=$(ls ~/.mozilla/firefox/ | grep '.default-release')
-USER_AGENT="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36"
+USER_AGENT="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0"
 
 if [ -z "$PROFILE_DIR" ]; then
     echo "Profile directory not found!"
     exit 1
 fi
 
-echo "user_pref(\"general.useragent.override\", \"$USER_AGENT\");" >> ~/.mozilla/firefox/$PROFILE_DIR/user.js
+echo 'user_pref("general.useragent.override", "'$USER_AGENT'");' >> ~/.mozilla/firefox/$PROFILE_DIR/user.js
+echo 'user_pref("browser.startup.homepage", "https://www.google.com");' >> ~/.mozilla/firefox/$PROFILE_DIR/user.js
+echo 'user_pref("browser.startup.firstrunSkipsHomepage", true);' >> ~/.mozilla/firefox/$PROFILE_DIR/user.js
+echo 'user_pref("browser.startup.firstrunSkipsHomepageOverride", true);' >> ~/.mozilla/firefox/$PROFILE_DIR/user.js
 
 echo "User agent set to: $USER_AGENT"
+
+echo "Puedes descargar las otras extensiones desde los siguientes enlaces:"
+echo "Auth Helper: https://addons.mozilla.org/firefox/addon/auth-helper/"
+echo "Always Visible: https://addons.mozilla.org/firefox/addon/always-visible/"
 
 echo "Todo listo para usar Firefox y gedit."
